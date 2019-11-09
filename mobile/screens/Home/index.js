@@ -7,6 +7,7 @@ import { Icon } from "react-native-eva-icons";
 import styled from "styled-components";
 
 import { Navigation } from "../../components/Navigation";
+import { Submission } from "../../components/Submission";
 
 const HomeWrapper = styled.View`
   flex: 1;
@@ -70,41 +71,6 @@ const ProjectSquare = ({ project }) => {
   );
 };
 
-const SubWrapper = styled.View`
-  flex-direction: row;
-  margin: 15px 0;
-`;
-const SubPreview = styled.View`
-  width: 90px;
-  height: 90px;
-  background: ${props => props.color};
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  elevation: 6;
-  margin-right: 20px;
-`;
-const SubInfo = styled.View``;
-const SubLikes = styled.View`
-  flex-direction: row;
-`;
-
-const Submission = ({ submission }) => {
-  return (
-    <SubWrapper>
-      <SubPreview color={submission.color} />
-      <SubInfo>
-        <Text>{submission.name}</Text>
-        <Text>{submission.user}</Text>
-        <Text>for {submission.project}</Text>
-        <SubLikes>
-          <Icon name="heart-outline" height={20} width={20} />
-          <Text>{submission.likes}</Text>
-        </SubLikes>
-      </SubInfo>
-    </SubWrapper>
-  );
-};
-
 const SubmissionList = styled.FlatList``;
 
 const Home = () => {
@@ -119,10 +85,7 @@ const Home = () => {
               <Text h3>Projects</Text>
               <Text>Global</Text>
             </ProjectsHeader>
-            <Link to="/">
-              {
-                // Should go to /users/userId
-              }
+            <Link to="/users/1">
               <ProfileIcon>
                 <Icon name="person-outline" width={32} height={32} />
               </ProfileIcon>
