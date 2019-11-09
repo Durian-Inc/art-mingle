@@ -15,12 +15,14 @@
   "dependencies": {
     "expo": "^35.0.1",
     "expo-linear-gradient": "~7.0.0",
+    "firebase": "^7.3.0",
     "react": "16.8.3",
     "react-native": "^0.59.8",
     "react-native-elements": "^1.2.7",
     "react-native-eva-icons": "^1.2.1",
     "react-native-svg": "9.9.5",
     "react-router-native": "5.1.2",
+    "reactn": "^2.2.4",
     "styled-components": "^4.4.1"
   }
 }

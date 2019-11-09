@@ -1,10 +1,12 @@
 import React from "react";
+import { useGlobal } from "reactn";
 import { View, ScrollView } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
-import { Navigation } from "../../components/Navigation";
 import styled from "styled-components";
+
+import { Navigation } from "../../components/Navigation";
 
 const HomeWrapper = styled.View`
   flex: 1;
