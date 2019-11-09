@@ -53,8 +53,6 @@ const App = () => {
     return unsubscribe
   }, [])
 
-  console.log(projects);
-
   return (
     <NativeRouter>
       <Content>

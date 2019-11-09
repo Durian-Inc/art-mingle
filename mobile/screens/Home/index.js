@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobal } from "reactn";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, FlatList } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
@@ -46,8 +46,7 @@ const PSBox = styled.View`
   justify-content: center;
 `;
 
-const ProjectsHolder = styled.ScrollView`
-  flex-direction: row;
+const ProjectsHolder = styled.FlatList`
   max-height: 280px;
 `;
 
@@ -109,6 +108,7 @@ const Submission = ({ submission }) => {
 const SubmissionList = styled.View``;
 
 const Home = () => {
+  const [ projects ] = useGlobal("projects");
   return (
     <HomeWrapper>
       <HomeScroll>
@@ -128,16 +128,14 @@ const Home = () => {
             </Link>
           </TopBar>
         </Constrain>
-
-        <ProjectsHolder horizontal showsHorizontalScrollIndicator={false}>
-          <ProjectSquare
-            project={{ name: "Sing-off", category: "music", color: "#CE95F0" }}
-          />
-          <ProjectSquare
-            project={{ name: "Draw-off", category: "music", color: "#CE95F0" }}
-          />
-        </ProjectsHolder>
-
+        <ProjectsHolder
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={projects}
+          progressViewOffset={50}
+          renderItem={({ item }) => <ProjectSquare project={item} />}
+          keyExtractor={item => item.id}
+        />
         <Constrain style={{ marginBottom: 100 }}>
           <Text h3>Followed</Text>
           <SubmissionList>
