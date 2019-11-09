@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const ProjectWrapper = styled.View`
   flex: 1;
-  margin: -75px -30px 0 -30px;
+  margin-top: -15px;
 `;
 
 const IconWrapper = styled.View`
