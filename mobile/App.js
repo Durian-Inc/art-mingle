@@ -21,7 +21,7 @@ const App = () => {
   return (
     <NativeRouter>
       <Content>
-        <Route exact path="/" component={ProjectView} />
+        <Route exact path="/" component={Home} />
         <Route path="/groups" component={Topics} />
         <Route path="/groups/:id" component={Topics} />
         <Route path="/projects" component={About} />
