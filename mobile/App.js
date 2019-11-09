@@ -6,7 +6,7 @@ import { Text, View, AppRegistry } from "react-native";
 
 import { NativeRouter, Route, Link } from "react-router-native";
 
-const Home = () => <Text>Home</Text>;
+import { Home } from "./screens/Home";
 
 const About = () => <Text>About</Text>;
 
