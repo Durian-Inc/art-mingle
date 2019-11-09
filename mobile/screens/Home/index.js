@@ -105,10 +105,11 @@ const Submission = ({ submission }) => {
   );
 };
 
-const SubmissionList = styled.View``;
+const SubmissionList = styled.FlatList``;
 
 const Home = () => {
   const [ projects ] = useGlobal("projects");
+  const [ followingSubmissions ] = useGlobal("followingSubmissions");
   return (
     <HomeWrapper>
       <HomeScroll>
@@ -138,48 +139,15 @@ const Home = () => {
         />
         <Constrain style={{ marginBottom: 100 }}>
           <Text h3>Followed</Text>
-          <SubmissionList>
-            <Submission
-              submission={{
-                name: "My First Project",
-                user: "Bob Ross",
-                category: "music",
-                project: "Sing-off",
-                likes: 17,
-                color: "#FFC28A"
-              }}
-            />
-            <Submission
-              submission={{
-                name: "Super Pro Dunkster",
-                user: "Evan Velazquz",
-                category: "music",
-                project: "Interpretive Basketball",
-                likes: 14,
-                color: "#46EAEA"
-              }}
-            />
-            <Submission
-              submission={{
-                name: "My First Project",
-                user: "Bob Ross",
-                category: "music",
-                project: "Sing-off",
-                likes: 17,
-                color: "#FFC28A"
-              }}
-            />
-            <Submission
-              submission={{
-                name: "Super Pro Dunkster",
-                user: "Evan Velazquz",
-                category: "music",
-                project: "Interpretive Basketball",
-                likes: 14,
-                color: "#46EAEA"
-              }}
-            />
-          </SubmissionList>
+          <SubmissionList
+            data={followingSubmissions}
+            renderItem={
+              ({ item }) => (
+                <Submission submission={item} />
+              )
+            }
+            keyExtractor={item => item.id}
+          />
         </Constrain>
       </HomeScroll>
 
