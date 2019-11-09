@@ -4326,6 +4326,11 @@ react-native-elements@^1.2.7:
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
 
+react-native-eva-icons@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-eva-icons/-/react-native-eva-icons-1.2.1.tgz#dfd9cd54ef6245d4a535e46e92951ce682b133d2"
+  integrity sha512-zdEX/ICOYlWeIP7waUBs73N6Emi+X5xfbt94SDVECOhvrr71g2qvmu3mqe0sI4jJ2986D/JARvlx043YK7CpGQ==
+
 react-native-ratings@^6.3.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.5.0.tgz#a1606ccba3c5b54eec8e6cfa4765a45cf0e4ab8d"
@@ -4338,6 +4343,11 @@ react-native-status-bar-height@^2.2.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.4.0.tgz#de8cee4bb733a196167210d2d0bc1fa10acba3e3"
   integrity sha512-pWvZFlyIHiuxLugLioq97vXiaGSovFXEyxt76wQtbq0gxv4dGXMPqYow46UmpwOgeJpBhqL1E0EKxnfJRrFz5w==
+
+react-native-svg@9.9.5:
+  version "9.9.5"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.9.5.tgz#5f9fa196ac78ac10c0ce85152e429dba98353904"
+  integrity sha512-nqiPIsC1jB1TUK+ii7ryWc2pDU+YFJojj3awWXOKEP214gfKvjypjvjmW4PCcH70uBLUp3AwaDK2GI/hmbmaoA==
 
 react-native-view-shot@2.6.0:
   version "2.6.0"
