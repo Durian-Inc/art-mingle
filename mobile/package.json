@@ -9,10 +9,11 @@
     "babel-preset-expo": "^7.0.0"
   },
   "dependencies": {
-    "expo": "^34.0.0",
+    "expo": "^35.0.1",
     "react": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.2.tar.gz",
+    "react-native": "^0.59.8",
     "react-native-elements": "^1.2.7",
-    "react-router-native": "5.1.2"
+    "react-router-native": "5.1.2",
+    "styled-components": "^4.4.1"
   }
 }
