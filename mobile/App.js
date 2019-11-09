@@ -7,6 +7,8 @@ import { NativeRouter, Route } from "react-router-native";
 
 import { Home } from "./screens/Home";
 
+import { ProjectView } from "./screens/ProjectView";
+
 const About = () => <Text>About</Text>;
 
 const Topics = () => <Text>Topics</Text>;
@@ -19,11 +21,11 @@ const App = () => {
   return (
     <NativeRouter>
       <Content>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={ProjectView} />
         <Route path="/groups" component={Topics} />
         <Route path="/groups/:id" component={Topics} />
         <Route path="/projects" component={About} />
-        <Route path="/projects/:id" component={About} />
+        <Route path="/projects/:id" component={ProjectView} />
         <Route path="/projects/:id/submissions" component={About} />
         <Route path="/profile" component={Topics} />
         <Route path="/users" component={Topics} />
