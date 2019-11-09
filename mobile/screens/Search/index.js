@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView, FlatList } from "react-native";
 import { Link, Route } from "react-router-native";
 import { Text, SearchBar, Button } from "react-native-elements";
@@ -114,54 +114,89 @@ const User = ({ user }) => {
   );
 };
 
-const CombinedList = () => {
-  return (
-    <View>
-      <Text h4>Groups</Text>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <Group group={item} />}
-        keyExtractor={item => item.id}
-      />
-      <Text h4>Users</Text>
-      <FlatList
-        data={USERSDATA}
-        renderItem={({ item }) => <User user={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  );
-};
-
-const GroupsList = () => {
-  return (
-    <View>
-      <Text h4>Groups</Text>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <Group group={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  );
-};
-
-const UsersList = () => {
-  return (
-    <View>
-      <Text h4>Groups</Text>
-      <FlatList
-        data={USERSDATA}
-        renderItem={({ item }) => <User user={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  );
-};
+const TabHolder = styled.View`
+  width: 100%;
+  height: 40px;
+  flex-direction: row;
+`;
+const TabLink = styled(Link)`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Search = ({ match }) => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mUsers, setMUsers] = useState(USERSDATA);
+  const [mGroups, setMGroups] = useState(DATA);
+
+  useEffect(() => {
+    setLoading(true);
+    const getMatching = async () => {
+      const temp = DATA.filter(item => {
+        if (item.name.includes(search)) {
+          return item;
+        }
+      });
+      setMGroups(temp);
+
+      const temp2 = USERSDATA.filter(item => {
+        if (item.name.includes(search)) {
+          return item;
+        }
+      });
+      setMUsers(temp2);
+    };
+    getMatching();
+    setLoading(false);
+  }, [search]);
+
+  const CombinedList = () => {
+    return (
+      <View>
+        <Text h4>Groups</Text>
+        <FlatList
+          data={mGroups}
+          renderItem={({ item }) => <Group group={item} />}
+          keyExtractor={item => item.id}
+        />
+        <Text h4>Users</Text>
+        <FlatList
+          data={mUsers}
+          renderItem={({ item }) => <User user={item} />}
+          keyExtractor={item => item.id}
+        />
+      </View>
+    );
+  };
+
+  const GroupsList = () => {
+    return (
+      <View>
+        <Text h4>Groups</Text>
+        <FlatList
+          data={mGroups}
+          renderItem={({ item }) => <Group group={item} />}
+          keyExtractor={item => item.id}
+        />
+      </View>
+    );
+  };
+
+  const UsersList = () => {
+    return (
+      <View>
+        <Text h4>Users</Text>
+        <FlatList
+          data={mUsers}
+          renderItem={({ item }) => <User user={item} />}
+          keyExtractor={item => item.id}
+        />
+      </View>
+    );
+  };
+
   return (
     <HomeWrapper>
       <HomeScroll>
@@ -179,15 +214,17 @@ const Search = ({ match }) => {
               borderBottomWidth: 0
             }}
           />
-          <Link to={`${match.path}`}>
-            <Text>All</Text>
-          </Link>
-          <Link to={`${match.path}/groups`}>
-            <Text>Groups</Text>
-          </Link>
-          <Link to={`${match.path}/users`}>
-            <Text>Users</Text>
-          </Link>
+          <TabHolder>
+            <TabLink to={`${match.path}`}>
+              <Text h4>All</Text>
+            </TabLink>
+            <TabLink to={`${match.path}/groups`}>
+              <Text h4>Groups</Text>
+            </TabLink>
+            <TabLink to={`${match.path}/users`}>
+              <Text h4>Users</Text>
+            </TabLink>
+          </TabHolder>
           <Route exact path={`${match.path}`} component={CombinedList} />
           <Route exact path={`${match.path}/groups`} component={GroupsList} />
           <Route exact path={`${match.path}/users`} component={UsersList} />

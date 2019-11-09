@@ -40,20 +40,14 @@ const Navigation = () => {
       </NavLink>
       <NavLink to="/search" underlayColor="#f0f4f7">
         <NavItem>
-          <Icon name="people-outline" width={20} height={20} fill="black" />
-          <Text>Groups</Text>
+          <Icon name="search-outline" width={20} height={20} fill="black" />
+          <Text>Search</Text>
         </NavItem>
       </NavLink>
       <NavLink to="/" underlayColor="#f0f4f7">
         <NavItem>
           <Icon name="clipboard-outline" width={20} height={20} fill="black" />
           <Text>Projects</Text>
-        </NavItem>
-      </NavLink>
-      <NavLink to="/" underlayColor="#f0f4f7">
-        <NavItem>
-          <Icon name="search-outline" width={20} height={20} fill="black" />
-          <Text>Users</Text>
         </NavItem>
       </NavLink>
     </NavWrapper>
