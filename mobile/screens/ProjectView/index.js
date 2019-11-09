@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const ProjectWrapper = styled.View`
   flex: 1;
-  margin-top: -15px;
+  margin-top: -30px;
 `;
 
 const IconWrapper = styled.View`
@@ -139,7 +139,9 @@ const ProjectView = () => {
     <ProjectWrapper>
       <ProjectHeader>
         <IconWrapper>
-          <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
+          <Link to="/">
+            <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
+          </Link>
           <View style={{ flexDirection: "row" }}>
             <ButtonContainer>
               <ButtonText>Submit</ButtonText>
