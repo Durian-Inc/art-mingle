@@ -4,19 +4,20 @@ import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import { Navigation } from "../../components/Navigation";
 import styled from "styled-components";
+import { Icon } from "react-native-eva-icons";
 
-const HomeWrapper = styled.View`
+const ProjectWrapper = styled.View`
   flex: 1;
 `
 
-const Submission = () => {
+const ProjectView = () => {
   return (
-    <HomeWrapper>
+    <ProjectWrapper>
       <Text h2>Hey Submission</Text>
 
       <Navigation />
-    </HomeWrapper>
+    </ProjectWrapper>
   );
 };
 
-export { Submission };
+export { ProjectView };
