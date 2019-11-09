@@ -38,7 +38,7 @@ const Navigation = () => {
           <Text>Home</Text>
         </NavItem>
       </NavLink>
-      <NavLink to="/" underlayColor="#f0f4f7">
+      <NavLink to="/search" underlayColor="#f0f4f7">
         <NavItem>
           <Icon name="people-outline" width={20} height={20} fill="black" />
           <Text>Groups</Text>

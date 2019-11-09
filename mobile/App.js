@@ -6,9 +6,10 @@ import { Text, View, AppRegistry } from "react-native";
 import { NativeRouter, Route } from "react-router-native";
 
 import { Home } from "./screens/Home";
+import { Search } from "./screens/Search";
 
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 import { ProjectView } from "./screens/ProjectView";
 import { Profile } from "./screens/Profile";
@@ -22,13 +23,13 @@ const Content = styled.View`
   flex: 1;
 `;
 
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
+import { YellowBox } from "react-native";
+import _ from "lodash";
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
 };
@@ -41,9 +42,8 @@ setGlobal({
   followUsers: [],
   curUser: undefined,
   curUserSubmissions: [],
-  followingSubmissions: [],
+  followingSubmissions: []
 });
-
 
 const App = () => {
   const setProjects = useGlobal("projects")[1];
@@ -58,80 +58,75 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = projectsQuery.onSnapshot(snapshot => {
       let projects = [];
-      snapshot.forEach(doc =>
-        projects.push({ ...doc.data(), id: doc.id }),
-      );
+      snapshot.forEach(doc => projects.push({ ...doc.data(), id: doc.id }));
       setProjects(projects);
     });
 
-    return unsubscribe
-  }, [])
+    return unsubscribe;
+  }, []);
 
   // Collect the current user and submissions in real-time
   useEffect(() => {
     let index = 0;
     let user = undefined;
     const unsubscribe = usersQuery.onSnapshot(snapshot => {
-      snapshot.forEach((doc) => {
+      snapshot.forEach(doc => {
         if (index == 1) {
-          user = { ...doc.data(), id: doc.id }
-          let submissions = []
+          user = { ...doc.data(), id: doc.id };
+          let submissions = [];
           // Find the users submissions
           if (user.submissions) {
-            user.submissions.forEach((submission) => {
-              submission.get.then((curSubmission) => {
-                submissions.push(
-                  { ...curSubmission.data(), id: curSubmission.id }
-                )
-                setCurUserSubmissions(submissions)
-              })
+            user.submissions.forEach(submission => {
+              submission.get.then(curSubmission => {
+                submissions.push({
+                  ...curSubmission.data(),
+                  id: curSubmission.id
+                });
+                setCurUserSubmissions(submissions);
+              });
             });
           }
 
           if (user.following) {
             let followingSubmissions = [];
-            user.following.forEach((user) => {
-              user.get().then((curUser) => {
-                const userData = curUser.data()
-                userData.submissions.forEach((submission) => {
-                  console.log(submission)
-                  submission.get().then((curSubmission) => {
-                    followingSubmissions.push(
-                      {
-                        ...curSubmission.data(),
-                        user: `${userData.firstName} ${userData.lastName}`,
-                        id: curSubmission.id
-                      }
-                    )
+            user.following.forEach(user => {
+              user.get().then(curUser => {
+                const userData = curUser.data();
+                userData.submissions.forEach(submission => {
+                  console.log(submission);
+                  submission.get().then(curSubmission => {
+                    followingSubmissions.push({
+                      ...curSubmission.data(),
+                      user: `${userData.firstName} ${userData.lastName}`,
+                      id: curSubmission.id
+                    });
                     setFollowingSubmissions(followingSubmissions);
-                  })
-                })
+                  });
+                });
               });
             });
           }
         }
-        index += 1
-      })
+        index += 1;
+      });
 
-      delete user.submissions
+      delete user.submissions;
       setCurUser(user);
     });
 
-    return unsubscribe
-  }, [])
-
+    return unsubscribe;
+  }, []);
 
   return (
     <NativeRouter>
       <Content>
         <Route exact path="/" component={Home} />
-        <Route path="/groups" component={Topics} />
-        <Route path="/groups/:id" component={Topics} />
         <Route path="/projects" component={About} />
         <Route path="/projects/:id" component={ProjectView} />
         <Route path="/projects/:id/submissions" component={About} />
-        <Route path="/users" component={Topics} />
-        <Route path="/users/:id" component={Profile} />
+        <Route path="/search" component={Search} />
+        <Route path="/groups/:id" component={Topics} />
+        <Route path="/users/:id" component={Topics} />
       </Content>
     </NativeRouter>
   );
