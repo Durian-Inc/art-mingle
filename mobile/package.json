@@ -1,9 +1,13 @@
 {
-  "name": "getting-started-with-react-router-4",
+  "name": "art-mingle",
   "version": "0.0.0",
-  "description": "React router 4 quick start example (https://reacttraining.com/react-router/native/guides/quick-start)",
-  "author": null,
-  "private": true,
+  "description": "",
+  "author": {
+    "name": "Clay McGinnis",
+    "email": "mcginnis@claymav.com"
+  },
+  "private": false,
+  "license": "AGPL-3.0-or-later",
   "main": "node_modules/expo/AppEntry.js",
   "devDependencies": {
     "babel-preset-expo": "^7.0.0"
