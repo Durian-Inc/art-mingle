@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Text, View, AppRegistry } from "react-native";
 
@@ -10,10 +11,14 @@ const About = () => <Text>About</Text>;
 
 const Topics = () => <Text>Topics</Text>;
 
+const Content = styled.View`
+  flex: 1;
+`;
+
 const App = () => {
   return (
     <NativeRouter>
-      <View>
+      <Content>
         <Route exact path="/" component={Home} />
         <Route path="/groups" component={Topics} />
         <Route path="/groups/:id" component={Topics} />
@@ -23,7 +28,7 @@ const App = () => {
         <Route path="/profile" component={Topics} />
         <Route path="/users" component={Topics} />
         <Route path="/users/:id" component={Topics} />
-      </View>
+      </Content>
     </NativeRouter>
   );
 };
