@@ -1,10 +1,8 @@
 import React from "react";
 
-import styled from "styled-components";
-
 import { Text, View, AppRegistry } from "react-native";
 
-import { NativeRouter, Route, Link } from "react-router-native";
+import { NativeRouter, Route } from "react-router-native";
 
 import { Home } from "./screens/Home";
 
@@ -12,16 +10,10 @@ const About = () => <Text>About</Text>;
 
 const Topics = () => <Text>Topics</Text>;
 
-const Content = styled.View`
-  height: 100%;
-  width: 100%;
-  padding: 60px 30px 0 30px;
-`;
-
 const App = () => {
   return (
     <NativeRouter>
-      <Content>
+      <View>
         <Route exact path="/" component={Home} />
         <Route path="/groups" component={Topics} />
         <Route path="/groups/:id" component={Topics} />
@@ -31,7 +23,7 @@ const App = () => {
         <Route path="/profile" component={Topics} />
         <Route path="/users" component={Topics} />
         <Route path="/users/:id" component={Topics} />
-      </Content>
+      </View>
     </NativeRouter>
   );
 };

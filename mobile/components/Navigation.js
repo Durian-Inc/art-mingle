@@ -19,7 +19,7 @@ const NavWrapper = styled.View`
 const NavItem = styled.View`
   display: flex;
   align-items: center;
-`
+`;
 
 const Navigation = () => {
   return (
@@ -50,7 +50,7 @@ const Navigation = () => {
       </Link>
     </NavWrapper>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { Navigation }
+export { Navigation };
