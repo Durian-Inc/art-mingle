@@ -11,6 +11,7 @@ import { Search } from "./screens/Search";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+import { Projects } from "./screens/Projects";
 import { ProjectView } from "./screens/ProjectView";
 import { Profile } from "./screens/Profile";
 import { firebaseConfig } from "./firebase";
@@ -121,7 +122,7 @@ const App = () => {
     <NativeRouter>
       <Content>
         <Route exact path="/" component={Home} />
-        <Route path="/projects" component={About} />
+        <Route path="/projects" component={Projects} />
         <Route path="/projects/:id" component={ProjectView} />
         <Route path="/projects/:id/submissions" component={About} />
         <Route path="/search" component={Search} />
