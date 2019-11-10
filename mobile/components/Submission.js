@@ -59,17 +59,23 @@ const LikeWrapper = styled.View`
 
 const Submission = ({ submission }) => {
   const [user] = useGlobal("curUser");
-  const [liked, setLiked] = useState(
-    submission.likers
-      ? submission.likers.findIndex(i => i.id === user.id) !== -1
-      : false
-  );
+
+  const doLike =
+    submission.likers &&
+    submission.likers.findIndex(i => i.id === user.id) !== -1;
+  const [liked, setLiked] = useState(doLike);
+
   const [addLike] = useMutation(ADD_LIKE);
   const [removeLike] = useMutation(REMOVE_LIKE);
 
   const handleLikeClick = () => {
     const mutate = liked ? removeLike : addLike;
     mutate({ variables: { submission: submission.id } });
+    if (!liked) submission.likers.push(user);
+    else {
+      const index = submission.likers.findIndex(i => i.id === user.id);
+      submission.likers.splice(index, 1);
+    }
     setLiked(!liked);
   };
 

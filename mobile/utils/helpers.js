@@ -41,6 +41,7 @@ export const GET_PROJECTS = gql`
 export const GET_ME_QUERY = gql`
   query getMe {
     me {
+      id
       firstName
       lastName
       profilePictureUrl
@@ -57,6 +58,7 @@ export const GET_ME_QUERY = gql`
           }
           likers {
             firstName
+            id
           }
           project {
             id
