@@ -1,5 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
+
+const ADD_PROJECT = gql`
+  mutation AddProject($projects: String!) {
+    addProject(project: $projects) {
+      projects
+    }
+  }
+`;
+
+const GET_PROJECTS = gql`
+  query GetProjects {
+    projects
+  }
+`;
 
 const Divider = styled.hr`
   width: 100%;
@@ -75,12 +91,27 @@ const AddPromptPage = () => {
     }
   }
 
-  // TODO: Send request to backend
   const submitHandler = (event) => {
     event.preventDefault();
 
     console.log( {title, date, desc} );
+
+    console.log(addProject({ variables: { type: event.target.value } }));
+    
   }
+
+  const [addProject] = useMutation(
+    ADD_PROJECT,
+    {
+      update(cache, { data: {addProject} }) {
+        const { projects } = cache.readQuery({ query: GET_PROJECTS });
+        cache.writeQuery({
+          query: GET_PROJECTS,
+          data: { projects: projects.concat([addProject]) }
+        });
+      }
+    }
+  );
 
   return (
     <Wrapper>

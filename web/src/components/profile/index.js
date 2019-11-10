@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobal } from "reactn";
 import styled from "styled-components";
 import { SmallCard } from "../card_small/index";
 
@@ -65,6 +66,11 @@ const Profile = ({
   submissions_no,
   color,
   submissions }) => {
+  const cur_user = useGlobal("curUser");
+
+  useEffect(() => {
+    console.log(cur_user);
+  });
 
   const user_submissions = submissions.map((element, index) => {
     if (element.likes.total >= 1000) {
@@ -99,12 +105,13 @@ const Profile = ({
     );
   });
 
+//          <Title>Welcome {cur_user.name}!</Title>
+//          <UserStat>Following {cur_user.name} people</UserStat>
+
   return(
     <ProfilePage>
       <Bio>
         <ProfileText>
-          <Title>Welcome {username}!</Title>
-          <UserStat>{interactions} Interactions</UserStat>
           <UserStat>{submissions_no} Submissions</UserStat>
         </ProfileText>
         <ProfileImage color={color}>

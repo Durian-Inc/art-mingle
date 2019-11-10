@@ -79,7 +79,12 @@ const user_submissions = [
 
 setGlobal({
   projects: [],
-  followingSubmissions: []
+  followUsers: [],
+  users: [],
+  //curUser: undefined,
+  curUserSubmissions: [],
+  followingSubmissions: [],
+  groups: []
 });
 
 const App = () => {
@@ -92,6 +97,8 @@ const App = () => {
 
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
+  const setUsers = useGlobal("users")[1];
+  const setGroups = useGlobal("groups")[1];
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
   const {
@@ -99,10 +106,29 @@ const AppBody = () => {
     loading: projectLoading,
     data: projectData
   } = useQuery(GET_PROJECTS);
-
   const { error: meError, loading: meLoading, data: meData } = useQuery(
     GET_ME_QUERY
   );
+  /*
+  const {
+    error: usersError,
+    loading: usersLoading,
+    data: usersData
+  } = useQuery(GET_USERS);
+  const {
+    error: groupError,
+    loading: groupLoading,
+    data: groupData
+  } = useQuery(GET_GROUPS);
+
+  useEffect(() => {
+    if (groupError) {
+      console.log(groupError);
+    } else if (!groupLoading) {
+      setGroups(groupData.groups);
+    }
+  }, [groupLoading]);
+  */
 
   // Find all the current project
   useEffect(() => {
@@ -111,9 +137,17 @@ const AppBody = () => {
     } else if (!projectLoading) {
       setProjects(projectData.projects);
     }
-
-    console.log(setProjects);
   }, [projectLoading]);
+/*
+  // Find all the current users
+  useEffect(() => {
+    if (usersError) {
+      console.log(usersError);
+    } else if (!usersLoading) {
+      setUsers(usersData.users);
+    }
+  }, [usersLoading]);
+
 
   // Collect the submissions for following users for the 'Followed' section
   useEffect(() => {
@@ -138,7 +172,7 @@ const AppBody = () => {
       );
     }
   }, [meLoading]);
-
+*/
   return (
     <Router>
       <AppWrap>
