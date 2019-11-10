@@ -13,6 +13,7 @@ import { ListProjects } from "./screens/ListProjects";
 import { ViewProject } from "./screens/ViewProject";
 import { Profile } from "./screens/Profile";
 import { Submissions } from "./screens/Submissions";
+import { ViewGroup } from "./screens/ViewGroup";
 import { client } from "./utils/apollo";
 
 import { GET_PROJECTS, GET_ME_QUERY, GET_USERS, GET_GROUPS } from "./utils/helpers";
@@ -141,7 +142,7 @@ const AppBody = () => {
         <Route exact path="/projects/:id" component={ViewProject} />
         <Route path="/projects/:id/submissions" component={Submissions} />
         <Route path="/search" component={Search} />
-        <Route path="/groups/:id" component={Topics} />
+        <Route path="/groups/:id" component={ViewGroup} />
         <Route path="/users/:id" component={Profile} />
       </Content>
     </NativeRouter>

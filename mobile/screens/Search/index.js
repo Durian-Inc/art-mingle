@@ -31,7 +31,26 @@ const Members = styled(Text)`
   margin-left: 10px;
 `;
 
+const ButtonContainer = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 36px
+  border-radius: 10px;
+  border: 3px solid black;
+  background-color: transparent;
+  margin-right: 15px;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 15px;
+  color: black;
+  text-align: center;
+`;
+
 const Group = ({ group }) => {
+  const [joined, setJoined] = useState(false);
+
   const onJoin = () => {
     // Do nothing for now
   };
@@ -45,7 +64,16 @@ const Group = ({ group }) => {
           <Members>{group.users.length}</Members>
         </MemRow>
       </View>
-      <Button onPress={onJoin} title="Join" />
+      {!joined && 
+        <ButtonContainer onPress={() => setJoined(true)}>
+          <ButtonText>Join</ButtonText>
+        </ButtonContainer>}
+      {joined && 
+        <ButtonContainer>
+          <Link to="/groups/1">
+            <ButtonText>View</ButtonText>
+          </Link>
+        </ButtonContainer>}
     </GroupWrapper>
   );
 };
@@ -158,23 +186,6 @@ const Search = ({ match }) => {
       </View>
     );
   };
-
-  const ButtonContainer = styled.TouchableOpacity`
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 36px
-    border-radius: 10px;
-    border: 3px solid black;
-    background-color: transparent;
-    margin-right: 15px;
-  `;
-
-  const ButtonText = styled.Text`
-    font-size: 15px;
-    color: black;
-    text-align: center;
-  `;
 
   const GroupsList = () => {
     const [modalShown, setModalShown] = useState(false);
