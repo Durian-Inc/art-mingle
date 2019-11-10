@@ -1,5 +1,4 @@
 import passport from "koa-passport";
-import axios from "axios";
 
 import { passportJwtSecret } from "jwks-rsa";
 import { IVerifyOptions } from "passport-http-bearer";
@@ -44,7 +43,6 @@ export const authFromBearer = async (
 
 const JWT_OPTS: StrategyOptions = {
   algorithms: [config.JWT_ALGORITHM],
-  audience: config.JWT_AUDIENCE,
   issuer: config.JWT_ISSUER,
   passReqToCallback: true,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -59,9 +57,8 @@ const JWT_OPTS: StrategyOptions = {
 passport.use(
   new JwtStrategy(
     JWT_OPTS,
-    async (req: { headers: any }, payload: any, done: IPassportCallback) => {
+    async (_: any, payload: any, done: IPassportCallback) => {
       const { sub, scope } = payload;
-
       if (sub.includes("@clients")) {
         done(undefined, undefined, { scope });
 
@@ -70,7 +67,7 @@ passport.use(
 
       try {
         let user = await User.findOne({
-          sub
+          email: payload.email
         });
 
         // If we don't find the user, we need to create them in our database.
@@ -81,13 +78,7 @@ passport.use(
           // https://auth0.com/docs/api-auth/why-use-access-tokens-to-secure-apis
           // ; therefore, we need to fetch their data from auth0 if they haven't
           // been created yet.
-          const response = await axios.get(config.JWT_USERINFO_URI, {
-            headers: {
-              Authorization: req.headers.authorization
-            }
-          });
-
-          const userInfo: IUserInfo | undefined = response.data;
+          const userInfo: IUserInfo | undefined = payload;
 
           if (!userInfo) {
             throw new Error("User information not returned from request.");

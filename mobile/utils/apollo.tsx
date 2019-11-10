@@ -14,7 +14,6 @@ const httpLink: ApolloLink = createHttpLink({
 const authLink: ApolloLink = setContext(async (_, { headers }) => {
   // Get access token from local storage
   const token: string = await AsyncStorage.getItem(config.BEARER_ACCESS_KEY) || "";
-  console.log(token);
 
   // return the headers to the context so httpLink can read them
   return {
