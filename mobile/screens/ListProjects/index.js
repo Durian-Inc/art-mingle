@@ -65,7 +65,7 @@ const ListProjects = () => {
         {projects.map((d) => {
           return (
             <PSWrapper color={colors[Math.floor(Math.random() * 5)]} key={d.id}>
-              <PSLink to={`/projects/${project.id}`}>
+              <PSLink to={`/projects/${d.id}`}>
                 <PSBoxWrapper>
                   <PSBox1>
                     {d.category === "music" && <Icon name="mic-outline" fill="#ffffff" width={100} height={100} />}
