@@ -5,11 +5,14 @@ import { Text, Image } from "react-native-elements";
 import styled from "styled-components";
 import { Icon } from "react-native-eva-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import { Submission } from "../../components/Submission";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
 
-const ProfileWrapper = styled.View`
+const SubmissionsWrapper = styled.ScrollView`
   flex: 1;
+  align-items; center;
+  padding: 60px 30px 0 30px;
 `;
 
 const IconWrapper = styled.View`
@@ -25,20 +28,11 @@ const BackIcon = styled(Icon)`
 `
 
 const InfoWrapper = styled.View`
-  align-items; center;
-  width: 100%;
-  height: 48%;
-  padding: 60px 30px 0 30px;
+  margin-bottom: 15px;
 `;
 
-const ProfileImage = styled.View`
-  align-self: center;
-  width: 175px;
-  height: 175px;
-  border-radius: 125px;
-  background: grey;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  elevation: 6;
+const SubmissionsSubWrapper = styled.View`
+  width: 100%;
 `
 
 const Name = styled(Text)`
@@ -49,16 +43,6 @@ const Name = styled(Text)`
   font-weight: bold;
 `
 
-const ProfileInfo = styled.View`
-  width: 100%;
-  height: 57%;
-  margin-top: -20px;
-  padding: 15px 30px 0 30px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  background: white;
-`;
-
 const SectionHeader = styled(Text)`
   font-size: 24px;
   font-weight: bold;
@@ -66,7 +50,7 @@ const SectionHeader = styled(Text)`
 
 const Submissions = () => {
   return (
-    <ProfileWrapper>
+    <SubmissionsWrapper showsVerticalScrollIndicator={false}>
       <InfoWrapper>
         <IconWrapper>
           <Link to="/projects/1">
@@ -79,10 +63,105 @@ const Submissions = () => {
           <Text p>72 Submissions</Text>
         </View>
       </InfoWrapper>
-      <View>
+      <SubmissionsSubWrapper style={{ marginBottom: 80 }}>
         <SectionHeader p>Top Submission</SectionHeader>
-      </View>
-    </ProfileWrapper>
+        <View style={{ marginLeft: -30, paddingLeft: 5 }}>
+          <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+        </View>
+        <SectionHeader p>Random Submissions</SectionHeader>
+        <View style={{ marginLeft: -30, paddingLeft: 5 }}>
+          <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+           <Submission
+            submission={{
+              name: "I am top project",
+              user: "David Gardiner",
+              category: "poetry",
+              project: "Poet-off",
+              likes: 99,
+              color: "#FFC28A"
+            }}
+          />
+        </View>
+      </SubmissionsSubWrapper>
+    </SubmissionsWrapper>
   );
 };
 

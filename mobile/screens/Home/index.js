@@ -71,7 +71,10 @@ const ProjectSquare = ({ project }) => {
   );
 };
 
-const SubmissionList = styled.FlatList``;
+const SubmissionList = styled.FlatList`
+  margin-right: 30px;
+  border: 1px solid red;
+`;
 
 const Home = () => {
   const [ projects ] = useGlobal("projects");
