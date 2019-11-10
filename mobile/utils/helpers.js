@@ -1,5 +1,19 @@
 import gql from "graphql-tag";
 
+export const GET_USERS = gql`
+  query users {
+    users {
+      id
+      firstName
+      lastName
+      submissions {
+        id
+      }
+    }
+  }
+`;
+
+
 export const GET_PROJECTS = gql`
   query projects {
     projects {

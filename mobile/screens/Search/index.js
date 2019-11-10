@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useGlobal } from "reactn";
 import { View, ScrollView, FlatList } from "react-native";
 import { Link, Route } from "react-router-native";
 import { Text, SearchBar, Button } from "react-native-elements";
@@ -20,24 +21,6 @@ const DATA = [
   {
     name: "Zoop",
     members: 6,
-    id: "3"
-  }
-];
-
-const USERSDATA = [
-  {
-    name: "Clay McGinnis",
-    projects: 3,
-    id: "1"
-  },
-  {
-    name: "Kevin S",
-    projects: 87,
-    id: "2"
-  },
-  {
-    name: "Tom Dong",
-    projects: 6,
     id: "3"
   }
 ];
@@ -101,12 +84,12 @@ const User = ({ user }) => {
         <Icon name="person-outline" height={48} width={48} />
         <View>
           <NameTier>
-            <Text h4>{user.name}</Text>
+            <Text h4>{`${user.firstName} ${user.lastName}`}</Text>
             <Icon name="heart" height={24} width={24} />
           </NameTier>
           <MemRow>
             <Icon name="clipboard-outline" width={20} height={20} />
-            <Members>{user.projects}</Members>
+            <Members>{user.submissions.length}</Members>
           </MemRow>
         </View>
       </UserWrapper>
@@ -128,7 +111,8 @@ const TabLink = styled(Link)`
 const Search = ({ match }) => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [mUsers, setMUsers] = useState(USERSDATA);
+  const [ users ] = useGlobal("users");
+  const [mUsers, setMUsers] = useState(users);
   const [mGroups, setMGroups] = useState(DATA);
 
   useEffect(() => {
@@ -141,8 +125,9 @@ const Search = ({ match }) => {
       });
       setMGroups(temp);
 
-      const temp2 = USERSDATA.filter(item => {
-        if (item.name.includes(search)) {
+      const temp2 = users.filter(item => {
+        const name = `${item.firstName} ${item.lastName}`.toLowerCase()
+        if (name.includes(search.toLowerCase())) {
           return item;
         }
       });

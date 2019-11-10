@@ -15,7 +15,7 @@ import { Profile } from "./screens/Profile";
 import { Submissions } from "./screens/Submissions";
 import { client } from "./utils/apollo";
 
-import { GET_PROJECTS, GET_ME_QUERY } from "./utils/helpers";
+import { GET_PROJECTS, GET_ME_QUERY, GET_USERS } from "./utils/helpers";
 
 const About = () => <Text>About</Text>;
 
@@ -39,6 +39,7 @@ console.warn = message => {
 setGlobal({
   projects: [],
   followUsers: [],
+  users: [],
   curUser: undefined,
   curUserSubmissions: [],
   followingSubmissions: []
@@ -54,6 +55,8 @@ const App = () => {
 
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
+  const setUsers = useGlobal("users")[1];
+
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
   const {
@@ -64,6 +67,9 @@ const AppBody = () => {
   const { error: meError, loading: meLoading, data: meData } = useQuery(
     GET_ME_QUERY
   );
+  const { error: usersError, loading: usersLoading, data: usersData } = useQuery(
+    GET_USERS
+  )
 
   // Find all the current project
   useEffect(() => {
@@ -73,6 +79,16 @@ const AppBody = () => {
       setProjects(projectData.projects);
     }
   }, [projectLoading]);
+
+  // Find all the current users
+  useEffect(() => {
+    if (usersError) {
+      console.log(usersError);
+    } else if (!usersLoading) {
+      setUsers(usersData.users);
+    }
+  }, [usersLoading]);
+
 
   // Collect the submissions for following users for the 'Followed' section
   useEffect(() => {

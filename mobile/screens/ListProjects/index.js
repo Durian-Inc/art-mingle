@@ -58,7 +58,6 @@ const PSLink = styled(Link)`
 
 const ListProjects = () => {
   const [ projects ] = useGlobal("projects");
-  console.log(projects);
   return (
     <ProjectsWrapper>
       <ScrollView style={{ marginBottom: 90 }} showsVerticalScrollIndicator={false}>
