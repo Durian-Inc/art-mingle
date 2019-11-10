@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useGlobal } from "reactn";
 import { View, ScrollView } from "react-native";
 import { Link } from "react-router-native";
 import { Text, Image } from "react-native-elements";
@@ -9,39 +10,6 @@ import { Navigation } from "../../components/Navigation";
 import { Submission } from "../../components/Submission";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
-
-const data = [
-  {
-    title: 'Sing-off',
-    desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-    type: 'music',
-    id: '1'
-  },
-  {
-    title: 'Sing-off',
-    desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-    type: 'art',
-    id: '2'
-  },
-  {
-    title: 'Sing-off',
-    desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-    type: 'poetry',
-    id: '3'
-  },
-  {
-    title: 'Sing-off',
-    desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-    type: 'music',
-    id: '4'
-  },
-  {
-    title: 'Sing-off',
-    desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-    type: 'poetry',
-    id: '5'
-  }
-]
 
 const ProjectsWrapper = styled.View`
   flex: 1;
@@ -89,23 +57,25 @@ const PSLink = styled(Link)`
 `;
 
 const ListProjects = () => {
+  const [ projects ] = useGlobal("projects");
+  console.log(projects);
   return (
     <ProjectsWrapper>
       <ScrollView style={{ marginBottom: 90 }} showsVerticalScrollIndicator={false}>
         <Text style={{ marginTop: 60 }} h3>Current Projects</Text>
-        {data.map((d) => {
+        {projects.map((d) => {
           return (
             <PSWrapper color={colors[Math.floor(Math.random() * 5)]} key={d.id}>
               <PSLink to="/projects/1">
                 <PSBoxWrapper>
                   <PSBox1>
-                    {d.type === "music" && <Icon name="mic-outline" fill="#ffffff" width={100} height={100} />}
-                    {d.type === "art" && <Icon name="color-palette-outline" fill="#ffffff" width={100} height={100} />}
-                    {d.type === "poetry" && <Icon name="edit-2-outline" fill="#ffffff" width={100} height={100} />}
-                    <PSName h4>{d.title}</PSName>
+                    {d.category === "music" && <Icon name="mic-outline" fill="#ffffff" width={100} height={100} />}
+                    {d.category === "art" && <Icon name="color-palette-outline" fill="#ffffff" width={100} height={100} />}
+                    {d.category === "poetry" && <Icon name="edit-2-outline" fill="#ffffff" width={100} height={100} />}
+                    <PSName h4>{d.name}</PSName>
                   </PSBox1>
                   <PSBox2>
-                    <PSName p>{d.desc}</PSName>
+                    <PSName p>{d.description}</PSName>
                   </PSBox2>
                 </PSBoxWrapper>
               </PSLink>

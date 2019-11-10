@@ -4,9 +4,11 @@ export const GET_PROJECTS = gql`
   query projects {
     projects {
       id
-      color
-      category
       name
+      description
+      category
+      color
+      deadline
     }
   }
 `;
@@ -40,6 +42,7 @@ export const GET_PROJECT_QUERY= gql`
   query showProject($id: String!) {
     project(id: $id) {
       name
+      description
       category
       color
       deadline
