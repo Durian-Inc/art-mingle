@@ -11,7 +11,7 @@ export class SubmissionResolver {
 
   @Authorized()
   @Query(() => [Submission])
-  public async products(): Promise<Submission[]> {
+  public async submissions(): Promise<Submission[]> {
     return this.productRepo.find();
   }
 }

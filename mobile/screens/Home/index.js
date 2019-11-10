@@ -74,8 +74,8 @@ const ProjectSquare = ({ project }) => {
 const SubmissionList = styled.FlatList``;
 
 const Home = () => {
-  const [projects] = useGlobal("projects");
-  const [followingSubmissions] = useGlobal("followingSubmissions");
+  const [ projects ] = useGlobal("projects");
+  const [ followingSubmissions ] = useGlobal("followingSubmissions");
   return (
     <HomeWrapper>
       <HomeScroll>

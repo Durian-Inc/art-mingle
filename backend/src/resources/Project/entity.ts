@@ -30,6 +30,10 @@ export class Project extends BaseEntity {
   public color: string;
 
   @Field(() => [Submission])
-  @OneToMany(() => Submission, (submissions: Submission) => submissions.project)
+  @OneToMany(
+    () => Submission,
+    (submissions: Submission) => submissions.project,
+    { lazy: true }
+  )
   submissions: Lazy<Submission[]>;
 }

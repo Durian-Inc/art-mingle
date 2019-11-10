@@ -58,16 +58,18 @@ export class User extends BaseEntity {
   public readonly dateJoined: Date;
 
   @Field(() => [Submission])
-  @OneToMany(() => Submission, (submissions: Submission) => submissions.user)
+  @OneToMany(() => Submission, (submissions: Submission) => submissions.user, {
+    lazy: true
+  })
   @JoinTable()
   submissions: Lazy<Submission[]>;
 
   @Field(() => [User])
-  @ManyToMany(() => User, (user: User) => user.followers)
+  @ManyToMany(() => User, user => user.following, { lazy: true })
   @JoinTable()
-  following: Lazy<User[]>;
+  followers: Lazy<User[]>;
 
   @Field(() => [User])
-  @ManyToMany(() => User, (user: User) => user.following)
-  followers: Lazy<User[]>;
+  @ManyToMany(() => User, user => user.followers, { lazy: true })
+  following: Lazy<User[]>;
 }

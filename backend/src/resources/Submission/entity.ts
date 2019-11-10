@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   ManyToOne,
+  CreateDateColumn,
   Column,
   Entity,
   PrimaryGeneratedColumn
@@ -19,6 +20,10 @@ export class Submission extends BaseEntity {
   public readonly id: string;
 
   @Field()
+  @CreateDateColumn()
+  public readonly dateSubmitted: Date;
+
+  @Field()
   @Column()
   public name: string;
 
@@ -34,9 +39,11 @@ export class Submission extends BaseEntity {
   @Column()
   public likes: number;
 
-  @ManyToOne(() => User, user => user.submissions)
+  @Field(() => User)
+  @ManyToOne(() => User, user => user.submissions, { lazy: true })
   user: Lazy<User>;
 
-  @ManyToOne(() => Project, project => project.submissions)
+  @Field(() => Project)
+  @ManyToOne(() => Project, project => project.submissions, { lazy: true })
   project: Lazy<Project>;
 }

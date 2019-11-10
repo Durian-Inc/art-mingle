@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ApolloProvider, useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 
 import { setGlobal, useGlobal } from "reactn";
@@ -15,6 +16,9 @@ import { ListProjects } from "./screens/ListProjects";
 import { ViewProject } from "./screens/ViewProject";
 import { Profile } from "./screens/Profile";
 import { firebaseConfig } from "./firebase";
+import { client } from "./utils/apollo";
+
+import { GET_PROJECTS, GET_ME_QUERY} from "./utils/helpers";
 
 const About = () => <Text>About</Text>;
 
@@ -35,9 +39,6 @@ console.warn = message => {
   }
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
 setGlobal({
   projects: [],
   followUsers: [],
@@ -47,76 +48,56 @@ setGlobal({
 });
 
 const App = () => {
+return <ApolloProvider client={client}><AppBody /></ApolloProvider>
+}
+
+const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
   const setCurUser = useGlobal("curUser")[1];
-  const setCurUserSubmissions = useGlobal("curUserSubmissions")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
+  const { error: projectError, loading: projectLoading, data: projectData } = useQuery(GET_PROJECTS);
+  const { error: meError, loading: meLoading, data: meData } = useQuery(GET_ME_QUERY);
 
-  const projectsQuery = db.collection("project");
-  const usersQuery = db.collection("users");
-
-  // Collect all projects in real-time
+  // Find all the current project
   useEffect(() => {
-    const unsubscribe = projectsQuery.onSnapshot(snapshot => {
-      let projects = [];
-      snapshot.forEach(doc => projects.push({ ...doc.data(), id: doc.id }));
-      setProjects(projects);
-    });
+    if (projectError) {
+      console.log(projectError);
+    }
+    else if(!projectLoading) {
+      setProjects(projectData.projects)
+    }
+  }, [projectLoading]);
 
-    return unsubscribe;
-  }, []);
-
-  // Collect the current user and submissions in real-time
+  // Collect the submissions for following users for the 'Followed' section
   useEffect(() => {
-    let index = 0;
-    let user = undefined;
-    const unsubscribe = usersQuery.onSnapshot(snapshot => {
-      snapshot.forEach(doc => {
-        if (index == 1) {
-          user = { ...doc.data(), id: doc.id };
-          let submissions = [];
-          // Find the users submissions
-          if (user.submissions) {
-            user.submissions.forEach(submission => {
-              submission.get.then(curSubmission => {
-                submissions.push({
-                  ...curSubmission.data(),
-                  id: curSubmission.id
-                });
-                setCurUserSubmissions(submissions);
-              });
-            });
-          }
+    if (meError) {
+      console.log(meError);
+    }
+    else if(!meLoading) {
+      const curUserData = meData.me
+      setCurUser(curUserData)
 
-          if (user.following) {
-            let followingSubmissions = [];
-            user.following.forEach(user => {
-              user.get().then(curUser => {
-                const userData = curUser.data();
-                userData.submissions.forEach(submission => {
-                  console.log(submission);
-                  submission.get().then(curSubmission => {
-                    followingSubmissions.push({
-                      ...curSubmission.data(),
-                      user: `${userData.firstName} ${userData.lastName}`,
-                      id: curSubmission.id
-                    });
-                    setFollowingSubmissions(followingSubmissions);
-                  });
-                });
-              });
-            });
-          }
-        }
-        index += 1;
-      });
-
-      delete user.submissions;
-      setCurUser(user);
-    });
-
-    return unsubscribe;
-  }, []);
+      let followingSubmissions = [];
+      curUserData.following.forEach((followingUser) =>{
+        followingUser.submissions.forEach((submission) => {
+          followingSubmissions.push(
+            {
+              id: submission.id,
+              name: submission.name,
+              likes: submission.likes,
+              date: new Date(submission.dateSubmitted),
+              color: "#000",
+              project: submission.project.name,
+              user: `${followingUser.firstName} ${followingUser.lastName}`
+            }
+          )
+        })
+      })
+      setFollowingSubmissions(
+        followingSubmissions.sort((a, b) => b.date - a.date)
+      );
+    }
+  }, [meLoading]);
 
   return (
     <NativeRouter>
@@ -135,4 +116,7 @@ const App = () => {
 
 export default App;
 
-AppRegistry.registerComponent("art-mingle", () => App);
+AppRegistry.registerComponent(
+  "art-mingle",
+  () => App
+);

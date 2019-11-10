@@ -11,7 +11,7 @@ export class ProjectResolver {
 
   @Authorized()
   @Query(() => [Project])
-  public async products(): Promise<Project[]> {
+  public async projects(): Promise<Project[]> {
     return this.productRepo.find();
   }
 }
