@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobal } from "reactn";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
@@ -80,7 +80,11 @@ const Home = () => {
   const [projects] = useGlobal("projects");
   const [followingSubmissions] = useGlobal("followingSubmissions");
   if (!user) {
-    return <Text h2>Loading</Text>;
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
   return (
     <HomeWrapper>

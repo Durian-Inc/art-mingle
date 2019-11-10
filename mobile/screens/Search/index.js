@@ -10,6 +10,8 @@ import styled from "styled-components";
 import { GroupModal } from "../../components/GroupModal";
 
 import { JOIN_GROUP } from "../../utils/helpers";
+const colors = ["#ABE8DC", "#B4EECD", "#B6DBF4", "#DCC5E6", "#ACDDD3", "#B3E3C8", "#B4D3E8", "#DABCE4",
+                "#FBEAA3", "#F6D2AD", "#F8C2B8", "#FDDCA8", "#EFC2A1", "#EAB9B2"]
 
 const HomeWrapper = styled.View`
   flex: 1;
@@ -28,6 +30,8 @@ const GroupWrapper = styled.View`
 
 const MemRow = styled.View`
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 `;
 const Members = styled(Text)`
   font-size: 18px;
@@ -95,19 +99,25 @@ const NameTier = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+const UserImage = styled.View`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+`
 
 const User = ({ user }) => {
   return (
     <Link to={`/users/${user.id}`}>
       <UserWrapper>
-        <Icon name="person-outline" height={48} width={48} />
-        <View>
+        <UserImage style={{
+          backgroundColor: colors[Math.floor(Math.random() * colors.length)]
+        }}/>
+        <View style={{ marginLeft: 10 }}>
           <NameTier>
             <Text h4>{`${user.firstName} ${user.lastName}`}</Text>
-            <Icon name="heart" height={24} width={24} />
           </NameTier>
           <MemRow>
-            <Icon name="clipboard-outline" width={20} height={20} />
+            <Icon style={{ marginRight: -5 }} name="clipboard-outline" width={20} height={20} />
             <Members>{user.submissions.length}</Members>
           </MemRow>
         </View>
@@ -117,12 +127,14 @@ const User = ({ user }) => {
 };
 
 const TabHolder = styled.View`
+  justify-content: space-between;
   width: 100%;
   height: 40px;
   flex-direction: row;
 `;
 const TabLink = styled(Link)`
   flex: 1;
+  width: 33%;
   align-items: center;
   justify-content: center;
 `;
@@ -164,6 +176,10 @@ const Search = ({ match }) => {
     width: 100%;
   `;
 
+  const ListWrapper = styled(FlatList)`
+    margin-bottom: 20px;
+  `
+
   const CombinedList = () => {
     const [modalShown, setModalShown] = useState(false);
 
@@ -179,7 +195,7 @@ const Search = ({ match }) => {
             <ButtonText>Create</ButtonText>
           </ButtonContainer>
         </GroupWrapper>
-        <FlatList
+        <ListWrapper
           data={mGroups}
           renderItem={({ item }) => <Group group={item} />}
           keyExtractor={item => item.id}
@@ -237,7 +253,7 @@ const Search = ({ match }) => {
     <HomeWrapper>
       <HomeScroll>
         <Constrain style={{ marginTop: 60, marginBottom: 100 }}>
-          <Text h3>Groups</Text>
+          <Text h3>Search</Text>
           <SearchBar
             placeholder="Search Here..."
             onChangeText={setSearch}
