@@ -11,7 +11,6 @@ const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
 
 const SubmissionsWrapper = styled.ScrollView`
   flex: 1;
-  align-items: center;
   padding: 60px 30px 0 30px;
 `;
 

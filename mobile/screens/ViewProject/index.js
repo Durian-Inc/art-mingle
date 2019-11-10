@@ -327,7 +327,7 @@ const ViewProject = props => {
             <ButtonContainer style={{width: 125}} onPress={handleAdd}>
               <ButtonText>Add to Group</ButtonText>
             </ButtonContainer>
-            <ButtonContainer onPress={handleAdd}>
+            <ButtonContainer onPress={handleSubmit}>
               <ButtonText>Submit</ButtonText>
             </ButtonContainer>
             <Icon
