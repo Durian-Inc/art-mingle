@@ -9,16 +9,12 @@ import { NativeRouter, Route } from "react-router-native";
 import { Home } from "./screens/Home";
 import { Search } from "./screens/Search";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-
 import { ListProjects } from "./screens/ListProjects";
 import { ViewProject } from "./screens/ViewProject";
 import { Profile } from "./screens/Profile";
-import { firebaseConfig } from "./firebase";
 import { client } from "./utils/apollo";
 
-import { GET_PROJECTS, GET_ME_QUERY} from "./utils/helpers";
+import { GET_PROJECTS, GET_ME_QUERY } from "./utils/helpers";
 
 const About = () => <Text>About</Text>;
 
@@ -48,23 +44,32 @@ setGlobal({
 });
 
 const App = () => {
-return <ApolloProvider client={client}><AppBody /></ApolloProvider>
-}
+  return (
+    <ApolloProvider client={client}>
+      <AppBody />
+    </ApolloProvider>
+  );
+};
 
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
-  const { error: projectError, loading: projectLoading, data: projectData } = useQuery(GET_PROJECTS);
-  const { error: meError, loading: meLoading, data: meData } = useQuery(GET_ME_QUERY);
+  const {
+    error: projectError,
+    loading: projectLoading,
+    data: projectData
+  } = useQuery(GET_PROJECTS);
+  const { error: meError, loading: meLoading, data: meData } = useQuery(
+    GET_ME_QUERY
+  );
 
   // Find all the current project
   useEffect(() => {
     if (projectError) {
       console.log(projectError);
-    }
-    else if(!projectLoading) {
-      setProjects(projectData.projects)
+    } else if (!projectLoading) {
+      setProjects(projectData.projects);
     }
   }, [projectLoading]);
 
@@ -72,27 +77,24 @@ const AppBody = () => {
   useEffect(() => {
     if (meError) {
       console.log(meError);
-    }
-    else if(!meLoading) {
-      const curUserData = meData.me
-      setCurUser(curUserData)
+    } else if (!meLoading) {
+      const curUserData = meData.me;
+      setCurUser(curUserData);
 
       let followingSubmissions = [];
-      curUserData.following.forEach((followingUser) =>{
-        followingUser.submissions.forEach((submission) => {
-          followingSubmissions.push(
-            {
-              id: submission.id,
-              name: submission.name,
-              likes: submission.likes,
-              date: new Date(submission.dateSubmitted),
-              color: "#000",
-              project: submission.project.name,
-              user: `${followingUser.firstName} ${followingUser.lastName}`
-            }
-          )
-        })
-      })
+      curUserData.following.forEach(followingUser => {
+        followingUser.submissions.forEach(submission => {
+          followingSubmissions.push({
+            id: submission.id,
+            name: submission.name,
+            likes: submission.likes,
+            date: new Date(submission.dateSubmitted),
+            color: "#000",
+            project: submission.project.name,
+            user: `${followingUser.firstName} ${followingUser.lastName}`
+          });
+        });
+      });
       setFollowingSubmissions(
         followingSubmissions.sort((a, b) => b.date - a.date)
       );
@@ -116,7 +118,4 @@ const AppBody = () => {
 
 export default App;
 
-AppRegistry.registerComponent(
-  "art-mingle",
-  () => App
-);
+AppRegistry.registerComponent("art-mingle", () => App);
