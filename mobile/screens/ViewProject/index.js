@@ -15,6 +15,7 @@ import { Icon } from "react-native-eva-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { SubmitModal } from "../../components/SubmitModal";
+import { AddToGroupModal } from "../../components/AddToGroupModal";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
@@ -259,7 +260,7 @@ const Followers = props => {
                     {i === props.data.length - 1 && count
                       ? "+" + count
                       : (
-                          follower.firstName[0] + follower.lastName[0]
+                          follower.user.firstName[0] + follower.user.lastName[0]
                         ).toUpperCase()}
                   </FollowerText>
                 </Follower>
@@ -278,6 +279,7 @@ const ViewProject = props => {
   const [followingSubmissions] = useGlobal("followingSubmissions");
   const [liked, setLiked] = useState(false);
   const [modalShown, setModalShown] = useState(false);
+  const [addModalShown, setAddModalShown] = useState(false);
   const [project, setProject] = useState({});
   const [resources, setResources] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -308,6 +310,9 @@ const ViewProject = props => {
   const handleSubmit = () => {
     setModalShown(!modalShown);
   };
+  const handleAdd = () => {
+    setAddModalShown(!addModalShown);
+  };
 
   return (
     <ProjectWrapper>
@@ -319,7 +324,10 @@ const ViewProject = props => {
             <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
           </Link>
           <View style={{ flexDirection: "row" }}>
-            <ButtonContainer onPress={handleSubmit}>
+            <ButtonContainer style={{width: 125}} onPress={handleAdd}>
+              <ButtonText>Add to Group</ButtonText>
+            </ButtonContainer>
+            <ButtonContainer onPress={handleAdd}>
               <ButtonText>Submit</ButtonText>
             </ButtonContainer>
             <Icon
@@ -364,6 +372,10 @@ const ViewProject = props => {
         project={id}
         visible={modalShown}
         setVisible={setModalShown}
+      />
+      <AddToGroupModal
+        visible={addModalShown}
+        setVisible={setAddModalShown}
       />
     </ProjectWrapper>
   );
