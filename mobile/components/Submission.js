@@ -5,6 +5,9 @@ import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
 import styled from "styled-components";
 
+import { useMutation } from "@apollo/react-hooks";
+import { ADD_LIKE, REMOVE_LIKE } from "../utils/helpers";
+
 const SubWrapper = styled.View`
   flex-direction: row;
   margin: 20px 0 20px 30px;
@@ -32,18 +35,18 @@ const SubLikes = styled.View`
 const SubTitle = styled(Text)`
   font-size: 18px;
   margin-bottom: -5px;
-`
+`;
 
 const SubProject = styled(Text)`
   margin-top: -5px;
   margin-bottom: 5px;
-`
+`;
 
 const SuperLikeWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   margin-right: 10px;
-`
+`;
 
 const LikeWrapper = styled.View`
   justify-content: center;
@@ -52,12 +55,21 @@ const LikeWrapper = styled.View`
   height: 100%;
   margin-right: 10px;
   right: 30;
-`
+`;
 
 const Submission = ({ submission }) => {
-  const [liked, setLiked] = useState(false);
+  const [user] = useGlobal("curUser");
+  const [liked, setLiked] = useState(
+    submission.likers
+      ? submission.likers.findIndex(i => i.id === user.id) !== -1
+      : false
+  );
+  const [addLike] = useMutation(ADD_LIKE);
+  const [removeLike] = useMutation(REMOVE_LIKE);
 
   const handleLikeClick = () => {
+    const mutate = liked ? removeLike : addLike;
+    mutate({ variables: { submission: submission.id } });
     setLiked(!liked);
   };
 
@@ -67,35 +79,42 @@ const Submission = ({ submission }) => {
       <SubInfo>
         <View>
           <SubTitle>{submission.name}</SubTitle>
-          <Text>{submission.firstName + " " + submission.lastName}</Text>
+          <Text>
+            {submission.user.firstName + " " + submission.user.lastName}
+          </Text>
           <SubProject>for {submission.project.name}</SubProject>
         </View>
-        <SubLikes>
-          <SuperLikeWrapper style={{ flexDirection: "row", }}>
-            <Icon name="heart" fill="#9EDCF0" height={20} width={20} />
-            <Text style={{ marginLeft: 1 }}>{submission.likes}</Text>
-          </SuperLikeWrapper>
-          <SuperLikeWrapper style={{ flexDirection: "row" }}>
-            <Icon name="heart" fill="#F0C658" height={20} width={20} />
-            <Text style={{ marginLeft: 1 }}>{submission.likes}</Text>
-          </SuperLikeWrapper>
-          <SuperLikeWrapper style={{ flexDirection: "row" }}>
-            <Icon name="heart" fill="#8A6929" height={20} width={20} />
-            <Text style={{ marginLeft: 1 }}>{submission.likes}</Text>
-          </SuperLikeWrapper>
-        </SubLikes>
+        {submission.likers ? (
+          <SubLikes>
+            <SuperLikeWrapper style={{ flexDirection: "row" }}>
+              <Icon name="heart" fill="#8A6929" height={20} width={20} />
+              <Text style={{ marginLeft: 1 }}>{submission.likers.length}</Text>
+            </SuperLikeWrapper>
+            <SuperLikeWrapper style={{ flexDirection: "row" }}>
+              <Icon name="heart" fill="#F0C658" height={20} width={20} />
+              <Text style={{ marginLeft: 1 }}>{submission.likers.length}</Text>
+            </SuperLikeWrapper>
+            <SuperLikeWrapper style={{ flexDirection: "row" }}>
+              <Icon name="heart" fill="#9EDCF0" height={20} width={20} />
+              <Text style={{ marginLeft: 1 }}>{submission.likers.length}</Text>
+            </SuperLikeWrapper>
+          </SubLikes>
+        ) : (
+          undefined
+        )}
       </SubInfo>
       <LikeWrapper>
-        <Icon onPress={handleLikeClick}
-              fill={liked ? "#ED7171" : ""}
-              name={liked ? "heart" : "heart-outline"}
-              width={36}
-              height={36} />
-        <Text p>80</Text>
+        <Icon
+          onPress={handleLikeClick}
+          fill={liked ? "#ED7171" : ""}
+          name={liked ? "heart" : "heart-outline"}
+          width={36}
+          height={36}
+        />
+        <Text p>{submission.likers ? submission.likers.length : 0}</Text>
       </LikeWrapper>
     </SubWrapper>
   );
 };
 
 export { Submission };
-

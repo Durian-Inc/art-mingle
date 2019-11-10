@@ -48,10 +48,16 @@ export const GET_ME_QUERY = gql`
         firstName
         lastName
         submissions {
-         id
+          id
           dateSubmitted
           name
-          likes
+          user {
+            firstName
+            lastName
+          }
+          likers {
+            firstName
+          }
           project {
             id
             name
@@ -62,8 +68,7 @@ export const GET_ME_QUERY = gql`
   }
 `;
 
-
-export const GET_PROJECT_QUERY= gql`
+export const GET_PROJECT_QUERY = gql`
   query showProject($id: String!) {
     project(id: $id) {
       name
@@ -85,6 +90,21 @@ export const GET_PROJECT_QUERY= gql`
         color
         type
       }
+    }
+  }
+`;
+
+export const ADD_LIKE = gql`
+  mutation AddLike($submission: String!) {
+    addLike(submission: $submission) {
+      id
+    }
+  }
+`;
+export const REMOVE_LIKE = gql`
+  mutation RemoveLike($submission: String!) {
+    removeLike(submission: $submission) {
+      id
     }
   }
 `;

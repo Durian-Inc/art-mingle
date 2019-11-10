@@ -16,7 +16,12 @@ import { Submissions } from "./screens/Submissions";
 import { ViewGroup } from "./screens/ViewGroup";
 import { client } from "./utils/apollo";
 
-import { GET_PROJECTS, GET_ME_QUERY, GET_USERS, GET_GROUPS } from "./utils/helpers";
+import {
+  GET_PROJECTS,
+  GET_ME_QUERY,
+  GET_USERS,
+  GET_GROUPS
+} from "./utils/helpers";
 
 const About = () => <Text>About</Text>;
 
@@ -69,12 +74,16 @@ const AppBody = () => {
   const { error: meError, loading: meLoading, data: meData } = useQuery(
     GET_ME_QUERY
   );
-  const { error: usersError, loading: usersLoading, data: usersData } = useQuery(
-    GET_USERS
-  )
-  const { error: groupError, loading: groupLoading, data: groupData} = useQuery(
-    GET_GROUPS
-  )
+  const {
+    error: usersError,
+    loading: usersLoading,
+    data: usersData
+  } = useQuery(GET_USERS);
+  const {
+    error: groupError,
+    loading: groupLoading,
+    data: groupData
+  } = useQuery(GET_GROUPS);
 
   useEffect(() => {
     if (groupError) {
@@ -82,7 +91,7 @@ const AppBody = () => {
     } else if (!groupLoading) {
       setGroups(groupData.groups);
     }
-  }, [groupLoading])
+  }, [groupLoading]);
 
   // Find all the current project
   useEffect(() => {
@@ -102,7 +111,6 @@ const AppBody = () => {
     }
   }, [usersLoading]);
 
-
   // Collect the submissions for following users for the 'Followed' section
   useEffect(() => {
     if (meError) {
@@ -112,22 +120,15 @@ const AppBody = () => {
       setCurUser(curUserData);
 
       let followingSubmissions = [];
-      curUserData.following.forEach((followingUser) =>{
-        followingUser.submissions.forEach((submission) => {
-          followingSubmissions.push(
-            {
-              id: submission.id,
-              name: submission.name,
-              likes: submission.likes,
-              date: new Date(submission.dateSubmitted),
-              color: "#000",
-              project: submission.project,
-              firstName: followingUser.firstName,
-              lastName: followingUser.lastName,
-            }
-          )
-        })
-      })
+      curUserData.following.forEach(followingUser => {
+        followingUser.submissions.forEach(submission => {
+          followingSubmissions.push({
+            ...submission,
+            date: new Date(submission.dateSubmitted),
+            color: "#000"
+          });
+        });
+      });
       setFollowingSubmissions(
         followingSubmissions.sort((a, b) => b.date - a.date)
       );
