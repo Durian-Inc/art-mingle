@@ -113,7 +113,6 @@ const data = {
 
 const ProjectWrapper = styled.View`
   flex: 1;
-  margin-top: -30px;
 `;
 
 const IconWrapper = styled.View`

@@ -13,7 +13,6 @@ const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
 
 const ProfileWrapper = styled.View`
   flex: 1;
-  margin-top: -30px
 `;
 
 const IconWrapper = styled.View`
