@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Icon from 'react-eva-icons';
 
 const NavWrap = styled.div`
   background: transparent;
@@ -12,6 +13,7 @@ const NavWrap = styled.div`
   height: 115px;
   width: 100%;
   z-index: 1;
+  margin: 0 auto;
 `;
 
 const NavLink = styled(Link)`
@@ -22,7 +24,11 @@ const NavLink = styled(Link)`
 `;
 
 const NavWrapRight = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin: 0 -15px;
+  height: 115px;
 
   a {
     font-size: 24px;
@@ -30,8 +36,17 @@ const NavWrapRight = styled.div`
   }
 `;
 
+const Profile = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 25px;
 
-// TODO: Add profile vector logo
+  i {
+    margin: 0;
+  }
+`;
+
 const NavBar = () => {
   return (
     <NavWrap>
@@ -40,7 +55,11 @@ const NavBar = () => {
       <NavWrapRight>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/add_prompt">Add Prompt</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
+        <NavLink to="/profile">
+          <Profile>
+            <Icon name="person" size="xlarge" fill="#212121" />
+          </Profile>
+        </NavLink>
       </NavWrapRight>
     </NavWrap>
   );

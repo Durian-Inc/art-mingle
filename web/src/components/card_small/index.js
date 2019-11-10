@@ -15,7 +15,7 @@ const CardWrap = styled.div`
 `;
 
 const CardImage = styled.div`
-  background: ${props => props.color};
+  background: linear-gradient(-45deg, rgba(256, 256, 256, 0) 0%, rgba(256, 256, 256, 0.3) 100%), ${props => props.color};
   border: 0;
   border-radius: 15px 0 0 15px;
   height: 137px;

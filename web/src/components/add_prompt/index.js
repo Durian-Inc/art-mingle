@@ -49,16 +49,15 @@ const FormLabel = styled.label`
 
 const SubmitButton = styled.button`
   background: #88c969;
-  border: none;
+  border: solid #88c969 3px;
   border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   font-size: 18px;
   height: 50px;
   width: 150px;
 `;
 
 const AddPromptPage = () => {
-  const [title, setTitle] = useState("Haiku Like U");
+  const [title, setTitle] = useState("Minimalist Graphic Design");
   const [date, setDate] = useState("Deadline");
   const [desc, setDesc] = useState("Description of my new project!");
 
@@ -79,6 +78,8 @@ const AddPromptPage = () => {
   // TODO: Send request to backend
   const submitHandler = (event) => {
     event.preventDefault();
+
+    console.log( {title, date, desc} );
   }
 
   return (
@@ -94,7 +95,7 @@ const AddPromptPage = () => {
         </FormLabel>
         <FormLabel>
           Deadline
-          <input type="text" name="date" value={date} onChange={changeHandler} />
+          <input type="date" name="date" value={date} onChange={changeHandler} />
         </FormLabel>
         <FormLabel>
           Description

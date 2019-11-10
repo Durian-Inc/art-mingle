@@ -15,7 +15,7 @@ const HomePage = styled.main`
 
 const TopBackgroundWrap = styled.div`
   margin: 115px 0 0 0;
-  width: 1098px;
+  max-width: 1098px;
 `;
 
 const BackgroundWrapFollowed = styled.div`
@@ -25,11 +25,12 @@ const BackgroundWrapFollowed = styled.div`
   background: #f9f9f9;
   margin: -10px 0 0 0;
   width: 100vw;
+  overflow: hidden;
 `;
 
 const BoundedMargin = styled.div`
   margin: 30px 0 0 0;
-  width: 1098px;
+  max-width: 1098px;
 `;
 
 const Title = styled.h1`
@@ -45,7 +46,7 @@ const ProjectGallery = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 20px 0 40px 0;
-  width: 1098px;
+  max-width: 1098px;
 `;
 
 const FollowGallery = styled.div`
@@ -138,6 +139,7 @@ const Home = () => {
         color={element.color}
         title={element.title}
         desc={element.desc}
+        key={index}
       />
     );
   });
@@ -150,6 +152,7 @@ const Home = () => {
         name={element.name}
         prompt={element.prompt}
         likes={element.likes}
+        key={index}
       />
     );
   });
