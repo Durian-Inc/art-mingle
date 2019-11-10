@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobal } from "reactn";
 import styled from "styled-components";
 import { BigCard } from "../card_big/index";
 import { SmallCard } from "../card_small/index";
@@ -46,7 +47,7 @@ const ProjectGallery = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 20px 0 40px 0;
-  max-width: 1098px;
+  width: 1098px;
 `;
 
 const FollowGallery = styled.div`
@@ -57,29 +58,6 @@ const FollowGallery = styled.div`
   margin: 20px 0 40px 0;
   width: 100%;
 `;
-
-const example_projects = [
-  {
-    color: "#ce95f0",
-    title: "Sing-off",
-    desc: "For the sing-off contest, showcase your vocals! Acapella, with music, anything goes!"
-  },
-  {
-    color: "#f49494",
-    title: "Draw-off",
-    desc: "For the draw-off contest, showcase your sketching skills! Let your imagination run free and have some fun doing so!"
-  },
-  {
-    color: "#f49494",
-    title: "Draw-off",
-    desc: "For the draw-off contest, showcase your sketching skills! Let your imagination run free and have some fun doing so!"
-  },
-  {
-    color: "#f49494",
-    title: "Draw-off",
-    desc: "For the draw-off contest, showcase your sketching skills! Let your imagination run free and have some fun doing so!"
-  }
-]
 
 const example_followed = [
   {
@@ -133,12 +111,18 @@ const example_followed = [
 ]
 
 const Home = () => {
-  const project_list = example_projects.map((element, index) => {
+  const [ projects ] = useGlobal("projects");
+
+  useEffect(() => {
+    console.log(projects);
+  });
+
+  const project_list = projects.map((element, index) => {
     return (
       <BigCard
         color={element.color}
-        title={element.title}
-        desc={element.desc}
+        title={element.name}
+        desc={element.description}
         key={index}
       />
     );

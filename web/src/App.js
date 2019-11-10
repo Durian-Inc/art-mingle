@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { ApolloProvider, useQuery } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
+import { setGlobal, useGlobal } from "reactn";
+
 import { AddPromptPage } from "./components/add_prompt/index";
 import { Home } from "./components/home";
 import { NavBar } from "./components/navbar";
 import { Profile } from "./components/profile";
+import { client } from "./utils/apollo";
+
+import {
+  GET_PROJECTS,
+  GET_ME_QUERY,
+  GET_USERS,
+  GET_GROUPS
+} from "./utils/helpers";
 
 const AppWrap = styled.div`
   display: flex;
@@ -66,12 +77,72 @@ const user_submissions = [
   }
 ]
 
-function App() {
+setGlobal({
+  projects: [],
+  followingSubmissions: []
+});
+
+const App = () => {
+  return (
+    <ApolloProvider client={client}>
+      <AppBody />
+    </ApolloProvider>
+  );
+};
+
+const AppBody = () => {
+  const setProjects = useGlobal("projects")[1];
+  const setCurUser = useGlobal("curUser")[1];
+  const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
+  const {
+    error: projectError,
+    loading: projectLoading,
+    data: projectData
+  } = useQuery(GET_PROJECTS);
+
+  const { error: meError, loading: meLoading, data: meData } = useQuery(
+    GET_ME_QUERY
+  );
+
+  // Find all the current project
+  useEffect(() => {
+    if (projectError) {
+      console.log(projectError);
+    } else if (!projectLoading) {
+      setProjects(projectData.projects);
+    }
+
+    console.log(setProjects);
+  }, [projectLoading]);
+
+  // Collect the submissions for following users for the 'Followed' section
+  useEffect(() => {
+    if (meError) {
+      console.log(meError);
+    } else if (!meLoading) {
+      const curUserData = meData.me;
+      setCurUser(curUserData);
+
+      let followingSubmissions = [];
+      curUserData.following.forEach(followingUser => {
+        followingUser.submissions.forEach(submission => {
+          followingSubmissions.push({
+            ...submission,
+            date: new Date(submission.dateSubmitted),
+            color: "#000"
+          });
+        });
+      });
+      setFollowingSubmissions(
+        followingSubmissions.sort((a, b) => b.date - a.date)
+      );
+    }
+  }, [meLoading]);
+
   return (
     <Router>
       <AppWrap>
         <NavBar />
-
         <Switch>
           <Route exact path="/">
             <Home />

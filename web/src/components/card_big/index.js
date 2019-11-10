@@ -9,8 +9,9 @@ const CardWrap = styled.div`
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   flex-direction: row;
-  height: 194px;
-  width: 528px;
+  justify-content: space-between;
+  height: 196px;
+  width: 500px;
   margin-bottom: 30px;
 `;
 
@@ -34,13 +35,13 @@ const CardTitle = styled.h1`
   color: #212121;
   font-size: 36px;
   font-weight: normal;
-  margin-left: 35px;
+  margin: 15px 0 10px 25px;
 `;
 
 const CardText = styled.p`
   color: #949494;
   font-size: 18px;
-  margin: 0 35px;
+  margin: 0 25px;
 `;
 
 const BigCard = ({color, title, desc}) => {
