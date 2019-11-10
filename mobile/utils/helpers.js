@@ -13,6 +13,32 @@ export const GET_USERS = gql`
   }
 `;
 
+export const GET_USER = gql`
+  query users($id: String!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      submissions {
+        id
+        name
+        project {
+          name
+          category
+        }
+        likers {
+          id
+        }
+        color
+      }
+      followers {
+        id
+      }
+    }
+  }
+`;
+
+
 export const GET_GROUPS = gql`
   query groups {
     groups {

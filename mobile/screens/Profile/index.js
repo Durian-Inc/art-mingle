@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { useQuery } from "@apollo/react-hooks";
+import { View, FlatList } from "react-native";
 import { Link } from "react-router-native";
 import { Text, Image } from "react-native-elements";
 import styled from "styled-components";
@@ -8,6 +9,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Navigation } from "../../components/Navigation";
 import { Submission } from "../../components/Submission";
 import SwipeUpDown from 'react-native-swipe-up-down';
+
+import { GET_USER } from "../../utils/helpers";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
 
@@ -83,8 +86,14 @@ const Full = () => {
   );
 }
 
-const Profile = () => {
+const Profile = (props) => {
   const [liked, setLiked] = useState(false);
+  const { id } = props.match.params;
+
+  const { loading, data, error } = useQuery(
+    GET_USER, {variables: { id }}
+  )
+
 
   const handleLikeClick = () => {
     setLiked(!liked);
@@ -92,7 +101,7 @@ const Profile = () => {
 
   /*return (
     <ProfileWrapper>
-      <SwipeUpDown		
+      <SwipeUpDown
         itemMini={<Mini />} // Pass props component when collapsed
         itemFull={<Full />} // Pass props component when show full
         disablePressToShow={false} // Press item mini to show full
@@ -101,7 +110,7 @@ const Profile = () => {
       />
     </ProfileWrapper>
   );*/
-  
+
   return (
     <ProfileWrapper>
       <ProfileHeader style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
@@ -116,60 +125,34 @@ const Profile = () => {
             //source={{ uri: "" }}
           />
         </ProfileImage>
-        <Name p>Clue McChungus</Name>
+        <Name p>{data && `${data.user.firstName} ${data.user.lastName}`}</Name>
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
           <Icon style={{ marginRight: 5 }} stroke="black" fill="#9EDCF0" name="heart" width={24} height={24}/>
           <Text p>Platinum Clout Since June, 2019</Text>
         </View>
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
           <Icon style={{ marginRight: 5 }} stroke="black" name="people" width={24} height={24}/>
-          <Text p>69 Followers</Text>
+          <Text p>{data && data.user.followers.length} Followers</Text>
         </View>
       </ProfileHeader>
       <ProfileInfo>
         <SectionHeader p>Submissions</SectionHeader>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Submission
-            submission={{
-              name: "My First Project",
-              user: "Bob Ross",
-              category: "music",
-              project: "Sing-off",
-              likes: 17,
-              color: "#FFC28A"
-            }}
-          />
-          <Submission
-            submission={{
-              name: "Super Pro Dunkster",
-              user: "Evan Velazquz",
-              category: "music",
-              project: "Interpretive Basketball",
-              likes: 14,
-              color: "#46EAEA"
-            }}
-          />
-          <Submission
-            submission={{
-              name: "My First Project",
-              user: "Bob Ross",
-              category: "music",
-              project: "Sing-off",
-              likes: 17,
-              color: "#FFC28A"
-            }}
-          />
-          <Submission
-            submission={{
-              name: "Super Pro Dunkster",
-              user: "Evan Velazquz",
-              category: "music",
-              project: "Interpretive Basketball",
-              likes: 14,
-              color: "#46EAEA"
-            }}
-          />
-        </ScrollView>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={data ? data.user.submissions : []}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => {
+            console.log(data.user.firstName, data.user.lastName, item)
+            return (<Submission
+              submission={{
+                name: item.name,
+                user: data.user,
+                project: item.project,
+                likers: item.likers,
+                color: item.color || "#FFC28A"
+              }}
+            />)
+          }} />
       </ProfileInfo>
       <Navigation />
     </ProfileWrapper>

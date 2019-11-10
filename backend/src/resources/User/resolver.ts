@@ -19,10 +19,7 @@ export class UserResolver extends ResourceResolver<resourceType>(
 ) {
   @Query((_: void) => resource, { nullable: true })
   protected async me(@Ctx() context: IContext) {
-    let user: User | undefined = context.state.user;
-    user = await User.findOneOrFail({
-      email: "tdong@test.com"
-    });
+    const user: User | undefined = context.state.user;
 
     if (!user) {
       return undefined;

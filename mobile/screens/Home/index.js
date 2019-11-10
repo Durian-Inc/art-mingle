@@ -77,6 +77,10 @@ const SubmissionList = styled.FlatList`
 
 const Home = () => {
   const [ projects ] = useGlobal("projects");
+  const [ curUser ] = useGlobal("curUser");
+
+  const id = curUser ? curUser.id : undefined
+
   const [ followingSubmissions ] = useGlobal("followingSubmissions");
   return (
     <HomeWrapper>
@@ -87,7 +91,7 @@ const Home = () => {
               <Text h3>Projects</Text>
               <Text>Global</Text>
             </ProjectsHeader>
-            <Link to="/users/1">
+            <Link to={`/users/${id}`}>
               <ProfileIcon>
                 <Icon name="person-outline" width={32} height={32} />
               </ProfileIcon>

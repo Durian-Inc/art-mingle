@@ -55,7 +55,7 @@ console.warn = message => {
     _console.warn(message);
   }
 
-  if (message.indexOf("Expo on your development machine.") <= -1) {
+  if (message.indexOf("You are not currently signed in") <= -1) {
     _console.warn(message);
   }
 };

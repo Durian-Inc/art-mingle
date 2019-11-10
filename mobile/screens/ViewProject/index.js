@@ -363,7 +363,7 @@ const ViewProject = props => {
         <Learning data={resources} />
         <Followers data={following} />
         <ViewContainer>
-          <Link to={"/projects/" + id + "/submissions"}>
+          <Link to={`/projects/${id}/submissions`}>
             <ViewText>View All Submissions</ViewText>
           </Link>
         </ViewContainer>
