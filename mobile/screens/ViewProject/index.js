@@ -191,7 +191,7 @@ const Learning = props => {
               style={{ marginRight: 20 }}
             >
               <Card
-                onPress={() => loadInBrowser(card.url)}
+                onPress={() => loadInBrowser(item.url)}
                 style={{
                   backgroundColor: colors[Math.floor(Math.random() * 5)]
                 }}
@@ -207,10 +207,10 @@ const Learning = props => {
                   }}
                 ></LinearGradient>
                 <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  {card.type === "video" && (
+                  {item.type === "video" && (
                     <Icon name="play-circle-outline" width={40} height={40} />
                   )}
-                  {card.type === "link" && (
+                  {item.type === "link" && (
                     <Icon name="file-text-outline" width={40} height={40} />
                   )}
                 </View>
