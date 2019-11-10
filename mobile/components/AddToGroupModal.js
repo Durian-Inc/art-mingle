@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useGlobal } from "reactn";
 import { View, Modal } from "react-native";
 import { Text, Button } from "react-native-elements";
 import { TextInput } from "react-native";
@@ -8,20 +8,9 @@ import { Icon } from "react-native-eva-icons";
 import "firebase/storage";
 import styled from "styled-components";
 
-const data = [
-  {
-    name: 'group1',
-    id: '1'
-  },
-  {
-    name: 'group2',
-    id: '2'
-  },
-  {
-    name: 'group3',
-    id: '3'
-  }
-]
+import { GET_ME_QUERY, ADD_PROJECT_TO_GROUP } from "../utils/helpers";
+
+import { useMutation } from "@apollo/react-hooks";
 
 const ModalWrapper = styled.View`
   align-items: center;
@@ -55,33 +44,40 @@ const ButtonText = styled.Text`
   text-align: center;
 `;
 
-const Groups = (props) => {
-  const handleAdd = () => {
-    // add to group
-  }
-
-  return(
-    // Check to see if group already has project and disable button if so
+const Groups = props => {
+  const [addProjectToGroup] = useMutation(ADD_PROJECT_TO_GROUP, {
+    refetchQueries: [{ query: GET_ME_QUERY }]
+  });
+  return (
     <View>
-      {props.data.map((group) => {
+      {props.data.map(group => {
         return (
           <View key={group.id}>
-            <Text p>{group.name}</Text>
-            <ButtonContainer onPress={handleAdd}>
+            <Text>{group.name}</Text>
+            <ButtonContainer
+              onPress={() => {
+                addProjectToGroup({
+                  variables: { group: group.id, project: props.project }
+                });
+                props.setVisible(false);
+              }}
+            >
               <ButtonText>Add</ButtonText>
             </ButtonContainer>
           </View>
         );
       })}
     </View>
-  )
-}
+  );
+};
 
-const AddToGroupModal = ({ visible, setVisible }) => {
+const AddToGroupModal = ({ project, visible, setVisible }) => {
+  const [user] = useGlobal("curUser");
+
   const handleSubmit = () => {
     // make group
-  }
- 
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -92,7 +88,11 @@ const AddToGroupModal = ({ visible, setVisible }) => {
       <ModalWrapper>
         <ModalView>
           <Text p>ADD TO GROUP</Text>
-          <Groups data={data} />
+          <Groups
+            data={user.groups}
+            project={project}
+            setVisible={setVisible}
+          />
           <Buttons>
             <Button
               onPress={() => {

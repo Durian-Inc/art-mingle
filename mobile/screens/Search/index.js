@@ -10,8 +10,22 @@ import styled from "styled-components";
 import { GroupModal } from "../../components/GroupModal";
 
 import { JOIN_GROUP } from "../../utils/helpers";
-const colors = ["#ABE8DC", "#B4EECD", "#B6DBF4", "#DCC5E6", "#ACDDD3", "#B3E3C8", "#B4D3E8", "#DABCE4",
-                "#FBEAA3", "#F6D2AD", "#F8C2B8", "#FDDCA8", "#EFC2A1", "#EAB9B2"]
+const colors = [
+  "#ABE8DC",
+  "#B4EECD",
+  "#B6DBF4",
+  "#DCC5E6",
+  "#ACDDD3",
+  "#B3E3C8",
+  "#B4D3E8",
+  "#DABCE4",
+  "#FBEAA3",
+  "#F6D2AD",
+  "#F8C2B8",
+  "#FDDCA8",
+  "#EFC2A1",
+  "#EAB9B2"
+];
 
 const HomeWrapper = styled.View`
   flex: 1;
@@ -56,14 +70,16 @@ const ButtonText = styled.Text`
 `;
 
 const Group = ({ group }) => {
-  const [ curUser ] = useGlobal("curUser");
-  const [joined, setJoined] = useState(curUser.groups.findIndex((i) => i.id === group.id) >= 0);
+  const [curUser] = useGlobal("curUser");
+  const [joined, setJoined] = useState(
+    curUser.groups.findIndex(i => i.id === group.id) >= 0
+  );
   const [joinGroup] = useMutation(JOIN_GROUP);
 
   const onJoin = async () => {
     // Do nothing for now
-    console.log(await joinGroup({variables: {id: group.id}}));
-    setJoined(true)
+    console.log(await joinGroup({ variables: { id: group.id } }));
+    setJoined(true);
   };
 
   return (
@@ -75,17 +91,18 @@ const Group = ({ group }) => {
           <Members>{group.users.length}</Members>
         </MemRow>
       </View>
-      {!joined &&
+      {!joined && (
         <ButtonContainer onPress={() => onJoin()}>
           <ButtonText>Join</ButtonText>
-        </ButtonContainer>}
-      {joined &&
+        </ButtonContainer>
+      )}
+      {joined && (
         <ButtonContainer>
           <Link to={`/groups/${group.id}`}>
             <ButtonText>View</ButtonText>
           </Link>
         </ButtonContainer>
-      }
+      )}
     </GroupWrapper>
   );
 };
@@ -103,21 +120,28 @@ const UserImage = styled.View`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-`
+`;
 
 const User = ({ user }) => {
   return (
     <Link to={`/users/${user.id}`}>
       <UserWrapper>
-        <UserImage style={{
-          backgroundColor: colors[Math.floor(Math.random() * colors.length)]
-        }}/>
+        <UserImage
+          style={{
+            backgroundColor: colors[Math.floor(Math.random() * colors.length)]
+          }}
+        />
         <View style={{ marginLeft: 10 }}>
           <NameTier>
             <Text h4>{`${user.firstName} ${user.lastName}`}</Text>
           </NameTier>
           <MemRow>
-            <Icon style={{ marginRight: -5 }} name="clipboard-outline" width={20} height={20} />
+            <Icon
+              style={{ marginRight: -5 }}
+              name="clipboard-outline"
+              width={20}
+              height={20}
+            />
             <Members>{user.submissions.length}</Members>
           </MemRow>
         </View>
@@ -178,7 +202,7 @@ const Search = ({ match }) => {
 
   const ListWrapper = styled(FlatList)`
     margin-bottom: 20px;
-  `
+  `;
 
   const CombinedList = () => {
     const [modalShown, setModalShown] = useState(false);
@@ -186,7 +210,6 @@ const Search = ({ match }) => {
     const handleCreate = () => {
       setModalShown(!modalShown);
     };
-
     return (
       <View>
         <GroupWrapper>
@@ -213,7 +236,6 @@ const Search = ({ match }) => {
 
   const GroupsList = () => {
     const [modalShown, setModalShown] = useState(false);
-
     const handleCreate = () => {
       setModalShown(!modalShown);
     };

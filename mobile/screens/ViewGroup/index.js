@@ -1,92 +1,14 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useGlobal } from "reactn";
-import { Link } from "react-router-native";
+import { Link, useParams } from "react-router-native";
 import { Text, Image } from "react-native-elements";
 import styled from "styled-components";
 import { Icon } from "react-native-eva-icons";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { Submission } from "../../components/Submission";
 
-const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
-
-const data = [
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '1'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '2'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '3'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '4'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '5'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '6'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '7'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '8'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '9'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '10'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '11'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '12'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '13'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '14'
-  },
-  {
-    firstName: 'Kevin',
-    lastName: 'Schooney',
-    id: '15'
-  },
-]
+const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
 const GroupWrapper = styled.ScrollView`
   flex: 1;
@@ -103,7 +25,7 @@ const IconWrapper = styled.View`
 
 const BackIcon = styled(Icon)`
   margin-left: -10px;
-`
+`;
 
 const InfoWrapper = styled.View`
   margin-bottom: 15px;
@@ -111,7 +33,7 @@ const InfoWrapper = styled.View`
 
 const SubmissionsSubWrapper = styled.View`
   width: 100%;
-`
+`;
 
 const Name = styled(Text)`
   margin-top: 5px;
@@ -119,12 +41,12 @@ const Name = styled(Text)`
   width: 100%;
   font-size: 32px;
   font-weight: bold;
-`
+`;
 
 const SectionHeader = styled(Text)`
   font-size: 24px;
   font-weight: bold;
-`
+`;
 
 const PSWrapper = styled(View)`
   background: ${props => props.color};
@@ -169,37 +91,42 @@ const ProfileImage = styled.View`
   height: 50px;
   border-radius: 25px;
   background: grey;
-`
+`;
 
 const MemberWrapper = styled.View`
-  flexDirection: row;
+  flex-direction: row;
   align-items: center;
   width: 100%;
   margin-bottom: 10px;
-`
+`;
 
 const MemberName = styled(Text)`
   margin-left: 10px;
   font-size: 24px;
-`
+`;
 
-const Members = (props) => {
+const Members = props => {
   return (
     <View>
-      {props.data.map((member) => {
+      {props.data.map(member => {
         return (
           <MemberWrapper key={member.id}>
             <ProfileImage></ProfileImage>
-            <MemberName p>{member.firstName + " " + member.lastName}</MemberName>
+            <MemberName p>
+              {member.firstName + " " + member.lastName}
+            </MemberName>
           </MemberWrapper>
-        )
+        );
       })}
     </View>
-  )
-}
+  );
+};
 
 const ViewGroup = () => {
-  const [ projects ] = useGlobal("projects");
+  const { id } = useParams();
+  const [projects] = useGlobal("projects");
+  const [groups] = useGlobal("groups");
+  const group = groups[groups.findIndex(i => i.id === id)];
 
   return (
     <GroupWrapper showsVerticalScrollIndicator={false}>
@@ -208,19 +135,19 @@ const ViewGroup = () => {
           <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
         </Link>
       </IconWrapper>
-      <Text h2>Group Name</Text>
+      <Text h2>{group.name}</Text>
       <SectionHeader p>Active Projects</SectionHeader>
       <ProjectsHolder
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={projects}
+        data={group.projects}
         progressViewOffset={50}
         renderItem={({ item }) => <ProjectSquare project={item} />}
         keyExtractor={item => item.id}
       />
       <SectionHeader p>Members</SectionHeader>
       <View>
-        <Members data={data}/>
+        <Members data={group.users} />
       </View>
     </GroupWrapper>
   );

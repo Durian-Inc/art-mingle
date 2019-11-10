@@ -7,6 +7,9 @@ import { Icon } from "react-native-eva-icons";
 import "firebase/storage";
 import styled from "styled-components";
 
+import { useMutation } from "@apollo/react-hooks";
+import { CREATE_GROUP, GET_GROUPS } from "../utils/helpers";
+
 const ModalWrapper = styled.View`
   align-items: center;
   justify-content: center;
@@ -46,15 +49,22 @@ const ButtonText = styled.Text`
 const TextInput = styled(Input)`
   padding: 0 10px;
   background: grey;
-`
+`;
 
 const GroupModal = ({ visible, setVisible }) => {
   const [name, setName] = useState("");
+  const [createGroup] = useMutation(CREATE_GROUP, {
+    refetchQueries: [{ query: GET_GROUPS }]
+  });
 
   const handleSubmit = () => {
-    // make group
-  }
- 
+    createGroup({
+      variables: {
+        name
+      }
+    });
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -65,20 +75,19 @@ const GroupModal = ({ visible, setVisible }) => {
       <ModalWrapper>
         <ModalView>
           <Text>Group Name</Text>
-          <TextInput
-            onChangeText={text => setName(text)}
-            value={name}
-          />
+          <TextInput onChangeText={text => setName(text)} value={name} />
           <Buttons>
-            <ButtonContainer>
+            <ButtonContainer onPress={handleSubmit}>
               <ButtonText>Submit</ButtonText>
             </ButtonContainer>
-            <ButtonContainer onPress={() => {
+            <ButtonContainer
+              onPress={() => {
                 setVisible(!visible);
               }}
-              type="clear">
+              type="clear"
+            >
               <ButtonText>Cancel</ButtonText>
-            </ButtonContainer>            
+            </ButtonContainer>
           </Buttons>
         </ModalView>
       </ModalWrapper>

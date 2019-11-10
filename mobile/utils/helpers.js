@@ -64,6 +64,8 @@ export const GET_GROUPS = gql`
       name
       users {
         id
+        firstName
+        lastName
       }
     }
   }
@@ -91,6 +93,7 @@ export const GET_ME_QUERY = gql`
       profilePictureUrl
       groups {
         id
+        name
       }
       projects {
         id
@@ -217,6 +220,24 @@ export const JOIN_GROUP = gql`
   mutation joinGroup($id: String!) {
     joinGroup(id: $id) {
       id
+    }
+  }
+`;
+
+export const CREATE_GROUP = gql`
+  mutation CreateGroup($name: String!) {
+    createGroup(name: $name) {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_PROJECT_TO_GROUP = gql`
+  mutation AddProjectToGroup($project: String!, $group: String!) {
+    addProjectToGroup(group: $group, project: $project) {
+      id
+      name
     }
   }
 `;

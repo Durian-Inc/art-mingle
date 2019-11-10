@@ -399,7 +399,11 @@ const ViewProject = props => {
         visible={modalShown}
         setVisible={setModalShown}
       />
-      <AddToGroupModal visible={addModalShown} setVisible={setAddModalShown} />
+      <AddToGroupModal
+        project={id}
+        visible={addModalShown}
+        setVisible={setAddModalShown}
+      />
     </ProjectWrapper>
   );
 };
