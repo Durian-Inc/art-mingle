@@ -41,8 +41,8 @@ const Navigation = () => {
   return (
     <NavWrapper
       style={{
-        paddingBottom: platform === "android" ? 0 : 30,
-        height: platform === "android" ? 65 : 90
+        paddingBottom: platform === "android" || platform === "" ? 0 : 30,
+        height: platform === "android" || platform === "" ? 65 : 90
       }}
     >
       <NavLink to="/" underlayColor="#f0f4f7">

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
-import { View } from "react-native";
+import { View, Linking, Image } from "react-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
 import styled from "styled-components";
@@ -14,11 +14,11 @@ const SubWrapper = styled.View`
   width: 100%;
 `;
 
-const SubPreview = styled.View`
+const SubPreview = styled.TouchableOpacity`
   width: 90px;
   height: 90px;
-  background: ${props => props.color};
   border-radius: 15px;
+  background: ${props => props.color};
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
   elevation: 6;
   margin-right: 10px;
@@ -79,9 +79,23 @@ const Submission = ({ submission }) => {
     setLiked(!liked);
   };
 
+  loadInBrowser = url => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        alert('bad')
+      }
+    });
+  };
+
+  //const { uri: localUri } = await FileSystem.downloadAsync(remoteUri, FileSystem.documentDirectory + 'name.ext');
+
   return (
     <SubWrapper>
-      <SubPreview color={submission.color} />
+      <SubPreview onPress={() => loadInBrowser(submission.url)} color={submission.color}>
+        <Image style={{ width: 90, height: 90, borderRadius: 15 }} source={{ uri: submission.url }} />
+      </SubPreview>
       <SubInfo>
         <View>
           <SubTitle>{submission.name}</SubTitle>

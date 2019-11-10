@@ -21,6 +21,7 @@
     "apollo-link-http": "^1.5.16",
     "expo": "^35.0.1",
     "expo-document-picker": "~7.0.0",
+    "expo-file-system": "~7.0.0",
     "expo-linear-gradient": "~7.0.0",
     "firebase": "^7.3.0",
     "graphql": "^14.5.8",

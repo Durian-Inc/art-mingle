@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { Link } from "react-router-native";
 import { Text, Image } from "react-native-elements";
@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { Icon } from "react-native-eva-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Submission } from "../../components/Submission";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_PROJECT_QUERY } from "../../utils/helpers";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
 
@@ -47,19 +49,57 @@ const SectionHeader = styled(Text)`
   font-weight: bold;
 `
 
-const Submissions = () => {
+const Random = props => {
+  return (
+    <View>
+      {props.data.sort(() => {return 0.5 - Math.random()}).map((submission) => {
+        return (
+          <Submission
+            submission={{
+              name: submission.name,
+              user: (submission.user.firstName + " " + submission.user.lastName),
+              category: props.project.category,
+              project: props.project.name,
+              likes: Array.from(submission.likers).length,
+              color: "#FFC28A",
+              url: submission.url
+            }}
+            key={submission.id}
+          />
+        );
+      })}
+    </View>
+  );
+}
+
+const Submissions = props => {
+  const { id } = props.match.params;
+  const [project, setProject] = useState({});
+
+  const { error, data, loading } = useQuery(GET_PROJECT_QUERY, {
+    variables: { id }
+  });
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    } else if (!loading) {
+      setProject(data.project);
+    }
+  }, [loading]);
+
   return (
     <SubmissionsWrapper showsVerticalScrollIndicator={false}>
       <InfoWrapper>
         <IconWrapper>
-          <Link to="/projects/1">
+          <Link to={"/projects/" + id}>
             <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
           </Link>
         </IconWrapper>
-        <Name p>Sing-off</Name>
-        <View style={{ alignSelf: "center" }}>
+        <Name p>{project.name}</Name>
+        <View style={{ alignSelf: "center", alignItems: "center" }}>
           <Text p>133 Interactions</Text>
-          <Text p>72 Submissions</Text>
+          <Text p>{Array.from(data.project.submissions).length} Submissions</Text>
         </View>
       </InfoWrapper>
       <SubmissionsSubWrapper style={{ marginBottom: 80 }}>
@@ -78,86 +118,7 @@ const Submissions = () => {
         </View>
         <SectionHeader p>Random Submissions</SectionHeader>
         <View style={{ marginLeft: -30, paddingLeft: 5 }}>
-          <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
-           <Submission
-            submission={{
-              name: "I am top project",
-              user: "David Gardiner",
-              category: "poetry",
-              project: "Poet-off",
-              likes: 99,
-              color: "#FFC28A"
-            }}
-          />
+          <Random data={Array.from(data.project.submissions)} project={data.project} />
         </View>
       </SubmissionsSubWrapper>
     </SubmissionsWrapper>

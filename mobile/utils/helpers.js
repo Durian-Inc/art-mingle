@@ -52,6 +52,7 @@ export const GET_ME_QUERY = gql`
           id
           dateSubmitted
           name
+          url
           user {
             firstName
             lastName
@@ -79,10 +80,20 @@ export const GET_PROJECT_QUERY = gql`
       color
       deadline
       submissions {
+        id
+        dateSubmitted
+        name
+        url
         user {
-          id
           firstName
           lastName
+        }
+        likers {
+          firstName
+        }
+        project {
+          id
+          name
         }
       }
       resources {
