@@ -13,6 +13,17 @@ export const GET_USERS = gql`
   }
 `;
 
+export const GET_GROUPS = gql`
+  query groups {
+    groups {
+      id
+      name
+      users {
+        id
+      }
+    }
+  }
+`;
 
 export const GET_PROJECTS = gql`
   query projects {

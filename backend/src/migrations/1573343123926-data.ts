@@ -4,6 +4,7 @@ import { User } from "../resources/User";
 import { Project } from "../resources/Project";
 import { Submission } from "../resources/Submission";
 import { LearningResource } from "../resources/LearningResource";
+import { Group } from "../resources/Group";
 
 export class data1573343123926 implements MigrationInterface {
   public async up(): Promise<any> {
@@ -126,6 +127,18 @@ export class data1573343123926 implements MigrationInterface {
       likers: [david, clay],
       user: tommy,
       project: project1
+    }).save();
+
+    await Group.create({
+      name: "S&T Bros",
+      users: [clay, david],
+      projects: [project1, project2]
+    }).save();
+
+    await Group.create({
+      name: "Weenie Hut Jr",
+      users: [kevin, tommy],
+      projects: [project1]
     }).save();
   }
 

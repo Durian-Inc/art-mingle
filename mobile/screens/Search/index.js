@@ -8,24 +8,6 @@ import { Navigation } from "../../components/Navigation";
 import styled from "styled-components";
 import { GroupModal } from "../../components/GroupModal";
 
-const DATA = [
-  {
-    name: "My Group",
-    members: 3,
-    id: "1"
-  },
-  {
-    name: "Your Group",
-    members: 87,
-    id: "2"
-  },
-  {
-    name: "Zoop",
-    members: 6,
-    id: "3"
-  }
-];
-
 const HomeWrapper = styled.View`
   flex: 1;
 `;
@@ -60,7 +42,7 @@ const Group = ({ group }) => {
         <Text h4>{group.name}</Text>
         <MemRow>
           <Icon name="people-outline" width={20} height={20} />
-          <Members>{group.members}</Members>
+          <Members>{group.users.length}</Members>
         </MemRow>
       </View>
       <Button onPress={onJoin} title="Join" />
@@ -113,14 +95,15 @@ const Search = ({ match }) => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [ users ] = useGlobal("users");
+  const [ groups ] = useGlobal("groups");
   const [mUsers, setMUsers] = useState(users);
-  const [mGroups, setMGroups] = useState(DATA);
+  const [mGroups, setMGroups] = useState(groups);
 
   useEffect(() => {
     setLoading(true);
     const getMatching = async () => {
-      const temp = DATA.filter(item => {
-        if (item.name.includes(search)) {
+      const temp = groups.filter(item => {
+        if (item.name.toLowerCase().includes(search.toLowerCase())) {
           return item;
         }
       });

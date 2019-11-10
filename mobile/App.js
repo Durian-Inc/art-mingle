@@ -15,7 +15,7 @@ import { Profile } from "./screens/Profile";
 import { Submissions } from "./screens/Submissions";
 import { client } from "./utils/apollo";
 
-import { GET_PROJECTS, GET_ME_QUERY, GET_USERS } from "./utils/helpers";
+import { GET_PROJECTS, GET_ME_QUERY, GET_USERS, GET_GROUPS } from "./utils/helpers";
 
 const About = () => <Text>About</Text>;
 
@@ -42,7 +42,8 @@ setGlobal({
   users: [],
   curUser: undefined,
   curUserSubmissions: [],
-  followingSubmissions: []
+  followingSubmissions: [],
+  groups: []
 });
 
 const App = () => {
@@ -56,7 +57,7 @@ const App = () => {
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
   const setUsers = useGlobal("users")[1];
-
+  const setGroups = useGlobal("groups")[1];
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
   const {
@@ -70,6 +71,17 @@ const AppBody = () => {
   const { error: usersError, loading: usersLoading, data: usersData } = useQuery(
     GET_USERS
   )
+  const { error: groupError, loading: groupLoading, data: groupData} = useQuery(
+    GET_GROUPS
+  )
+
+  useEffect(() => {
+    if (groupError) {
+      console.log(groupError);
+    } else if (!groupLoading) {
+      setGroups(groupData.groups);
+    }
+  }, [groupLoading])
 
   // Find all the current project
   useEffect(() => {

@@ -11,6 +11,7 @@ import {
 
 import { Submission } from "../Submission";
 import { LearningResource } from "../LearningResource";
+import { Group } from "../Group";
 import { Lazy } from "../../lib/helpers";
 
 @ObjectType()
@@ -58,4 +59,11 @@ export class Project extends BaseEntity {
   )
   @JoinTable()
   resources: Lazy<LearningResource[]>;
+
+  @Field(() => [Group])
+  @ManyToMany(() => Group, (group: Group) => group.projects, {
+    lazy: true
+  })
+  @JoinTable()
+  groups: Lazy<Project[]>;
 }
