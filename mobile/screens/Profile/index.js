@@ -28,7 +28,7 @@ const BackIcon = styled(Icon)`
 `
 
 const ProfileHeader = styled.View`
-  align-items; center;
+  align-items: center;
   width: 100%;
   height: 48%;
   padding: 60px 30px 0 30px;
