@@ -101,7 +101,7 @@ const Home = () => {
         <ProjectsHolder
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={projects}
+          data={user.projects}
           progressViewOffset={50}
           renderItem={({ item }) => <ProjectSquare project={item} />}
           keyExtractor={item => item.id}

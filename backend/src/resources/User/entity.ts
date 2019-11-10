@@ -14,6 +14,7 @@ import { Lazy } from "../../lib/helpers";
 
 import { Submission } from "../Submission";
 import { Group } from "../Group";
+import { Project } from "../Project";
 
 @ObjectType()
 @Entity()
@@ -84,4 +85,9 @@ export class User extends BaseEntity {
   @ManyToMany(() => Group, (group: Group) => group.users, { lazy: true })
   @JoinTable()
   groups: Lazy<Group[]>;
+
+  @Field(() => [Project])
+  @ManyToMany(() => Project, project => project.participants, { lazy: true })
+  @JoinTable()
+  projects: Lazy<Project[]>;
 }

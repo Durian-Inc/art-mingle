@@ -92,6 +92,14 @@ export const GET_ME_QUERY = gql`
       groups {
         id
       }
+      projects {
+        id
+        name
+        description
+        category
+        color
+        deadline
+      }
       following {
         firstName
         lastName
@@ -180,6 +188,21 @@ export const ADD_FOLLOW = gql`
 export const REMOVE_FOLLOW = gql`
   mutation RemoveFollow($user: String!) {
     removeFollow(user: $user) {
+      id
+    }
+  }
+`;
+
+export const ADD_PROJECT = gql`
+  mutation AddProject($id: String!) {
+    addProject(project: $id) {
+      id
+    }
+  }
+`;
+export const REMOVE_PROJECT = gql`
+  mutation RemoveProject($id: String!) {
+    removeProject(project: $id) {
       id
     }
   }

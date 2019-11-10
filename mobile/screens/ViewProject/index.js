@@ -19,8 +19,13 @@ import { AddToGroupModal } from "../../components/AddToGroupModal";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
-import { useQuery } from "@apollo/react-hooks";
-import { GET_PROJECT_QUERY } from "../../utils/helpers";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import {
+  ADD_PROJECT,
+  REMOVE_PROJECT,
+  GET_PROJECT_QUERY,
+  GET_ME_QUERY
+} from "../../utils/helpers";
 
 const ProjectWrapper = styled.View`
   flex: 1;
@@ -276,6 +281,7 @@ const Followers = props => {
 };
 
 const ViewProject = props => {
+  const [user] = useGlobal("curUser");
   const [followingSubmissions] = useGlobal("followingSubmissions");
   const [liked, setLiked] = useState(false);
   const [modalShown, setModalShown] = useState(false);
@@ -289,10 +295,28 @@ const ViewProject = props => {
     variables: { id }
   });
 
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: { id },
+    refetchQueries: [
+      { query: GET_ME_QUERY },
+      { query: GET_PROJECT_QUERY, variables: { id } }
+    ]
+  });
+  const [removeProject] = useMutation(REMOVE_PROJECT, {
+    variables: { id },
+    refetchQueries: [
+      { query: GET_ME_QUERY },
+      { query: GET_PROJECT_QUERY, variables: { id } }
+    ]
+  });
+
   useEffect(() => {
     if (error) {
       alert(error);
     } else if (!loading) {
+      setLiked(
+        user.projects && user.projects.findIndex(i => i.id === id) != -1
+      );
       setProject(data.project);
       setResources(data.project.resources);
     }
@@ -305,6 +329,8 @@ const ViewProject = props => {
   }, []);
 
   const handleLikeClick = () => {
+    if (liked) removeProject();
+    else addProject();
     setLiked(!liked);
   };
   const handleSubmit = () => {

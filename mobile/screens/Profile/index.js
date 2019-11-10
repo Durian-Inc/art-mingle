@@ -7,7 +7,12 @@ import { Icon } from "react-native-eva-icons";
 import { Navigation } from "../../components/Navigation";
 import { Submission } from "../../components/Submission";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { GET_USER, ADD_FOLLOW, REMOVE_FOLLOW } from "../../utils/helpers";
+import {
+  GET_USER,
+  ADD_FOLLOW,
+  REMOVE_FOLLOW,
+  GET_ME_QUERY
+} from "../../utils/helpers";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
@@ -89,10 +94,16 @@ const Profile = () => {
   const { data, loading, error } = useQuery(GET_USER, { variables: { id } });
 
   const [addFollow, { error: addError }] = useMutation(ADD_FOLLOW, {
-    refetchQueries: [{ query: GET_USER, variables: { id } }]
+    refetchQueries: [
+      { query: GET_USER, variables: { id } },
+      { query: GET_ME_QUERY }
+    ]
   });
   const [removeFollow, { error: removeError }] = useMutation(REMOVE_FOLLOW, {
-    refetchQueries: [{ query: GET_USER, variables: { id } }]
+    refetchQueries: [
+      { query: GET_USER, variables: { id } },
+      { query: GET_ME_QUERY }
+    ]
   });
   const [liked, setLiked] = useState(false);
 

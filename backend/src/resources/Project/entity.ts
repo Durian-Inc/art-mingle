@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 
 import { Submission } from "../Submission";
+import { User } from "../User";
 import { LearningResource } from "../LearningResource";
 import { Group } from "../Group";
 import { Lazy } from "../../lib/helpers";
@@ -66,4 +67,8 @@ export class Project extends BaseEntity {
   })
   @JoinTable()
   groups: Lazy<Project[]>;
+
+  @Field(() => [User])
+  @ManyToMany(() => User, user => user.projects, { lazy: true })
+  participants: Lazy<User[]>;
 }
