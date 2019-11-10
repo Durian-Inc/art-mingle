@@ -32,7 +32,7 @@ const Submission = ({ submission }) => {
       <SubInfo>
         <View>
           <Text>{submission.name}</Text>
-          <Text>{submission.user}</Text>
+          <Text>{submission.firstName + " " + submission.lastName}</Text>
           <Text>for {submission.project.name}</Text>
         </View>
         <SubLikes>
