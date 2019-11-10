@@ -6,6 +6,7 @@ import { Text, SearchBar, Button } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
 import { Navigation } from "../../components/Navigation";
 import styled from "styled-components";
+import { GroupModal } from "../../components/GroupModal";
 
 const DATA = [
   {
@@ -137,10 +138,28 @@ const Search = ({ match }) => {
     setLoading(false);
   }, [search]);
 
+  const GroupWrapper = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  `
+
   const CombinedList = () => {
+    const [modalShown, setModalShown] = useState(false);
+
+    const handleCreate = () => {
+      setModalShown(!modalShown);
+    };
+
     return (
       <View>
-        <Text h4>Groups</Text>
+        <GroupWrapper >
+          <Text h4>Groups</Text>
+          <ButtonContainer onPress={handleCreate}>
+            <ButtonText>Create</ButtonText>
+          </ButtonContainer>
+        </GroupWrapper>
         <FlatList
           data={mGroups}
           renderItem={({ item }) => <Group group={item} />}
@@ -152,19 +171,49 @@ const Search = ({ match }) => {
           renderItem={({ item }) => <User user={item} />}
           keyExtractor={item => item.id}
         />
+        <GroupModal visible={modalShown} setVisible={setModalShown} />
       </View>
     );
   };
 
+  const ButtonContainer = styled.TouchableOpacity`
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 36px
+    border-radius: 10px;
+    border: 3px solid black;
+    background-color: transparent;
+    margin-right: 15px;
+  `;
+
+  const ButtonText = styled.Text`
+    font-size: 15px;
+    color: black;
+    text-align: center;
+  `;
+
   const GroupsList = () => {
+    const [modalShown, setModalShown] = useState(false);
+
+    const handleCreate = () => {
+      setModalShown(!modalShown);
+    };
+
     return (
       <View>
-        <Text h4>Groups</Text>
+        <GroupWrapper>
+          <Text h4>Groups</Text>
+          <ButtonContainer onPress={handleCreate}>
+            <ButtonText>Create</ButtonText>
+          </ButtonContainer>
+        </GroupWrapper>
         <FlatList
           data={mGroups}
           renderItem={({ item }) => <Group group={item} />}
           keyExtractor={item => item.id}
         />
+        <GroupModal visible={modalShown} setVisible={setModalShown} />
       </View>
     );
   };
