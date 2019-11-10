@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 //import { Link } from "react-router-dom";
+import Icon from 'react-eva-icons';
 
 const CardWrap = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const CardWrap = styled.div`
   flex-direction: row;
   height: 137px;
   width: 436px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 `;
 
 const CardImage = styled.div`
@@ -24,40 +25,121 @@ const CardImage = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  margin-left: 10px;
   width: 299px;
 `;
 
 const CardTitle = styled.h1`
   color: #212121;
-  font-size: 36px;
+  font-size: 22px;
   font-weight: normal;
-  margin-left: 35px;
+  margin: 0;
 `;
 
-const CardText = styled.p`
+const Author = styled.p`
   color: #949494;
   font-size: 18px;
-  margin: 0 35px;
+  margin: 5px 0 0 0;
+`;
+
+const Prompt = styled.p`
+  color: #949494;
+  font-size: 18px;
+  margin: 0;
 `;
 
 const RegLikes = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin: 0;
 `;
 
+const Top = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 0 0;
 
-// TODO: Add tiered likes and regular like buttom
-const SmallCard = ({color, title, desc}) => {
+`;
+
+const Bottom = styled.div`
+  color: #949494;
+  margin: 5px 0 5px 0;
+`;
+
+const SpecialLike = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 25px;
+  margin: 5px 0 0 0;
+
+  i {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+  }
+
+  p {
+    font-size: 18px;
+    margin: 0 20px 0 5px;
+  }
+`;
+
+const GeneralLike = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #949494;
+  margin: 0 10px 0 0;
+
+  i {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+`;
+
+const SmallCard = ({color, title, name, prompt, likes}) => {
+  const { platinum, gold, bronze, total } = likes;
+
   return (
     <CardWrap>
       <CardImage color={color}/>
       <Info>
-        <CardTitle>{title}</CardTitle>
-        <CardText>{desc}</CardText>
-        <RegLikes>
+        <Top>
+          <CardTitle>{title}</CardTitle>
+          <Author>{name}</Author>
+        </Top>
 
-        </RegLikes>
+        <Bottom>
+          <Prompt>{prompt}</Prompt>
+          <RegLikes>
+            <SpecialLike>
+              <Icon name="heart" size="large" fill="#9edcf0" />
+              <p>x{platinum}</p>
+            </SpecialLike>
+            <SpecialLike>
+              <Icon name="heart" size="large" fill="#f0c658" />
+              <p>x{gold}</p>
+            </SpecialLike>
+            <SpecialLike>
+              <Icon name="heart" size="large" fill="#ab7919" />
+              <p>x{bronze}</p>
+            </SpecialLike>
+          </RegLikes>
+        </Bottom>
       </Info>
+      <GeneralLike>
+        <Icon name="heart-outline" size="xlarge" fill="#949494" />
+        <p>{total}</p>
+      </GeneralLike>
     </CardWrap>
   );
 };

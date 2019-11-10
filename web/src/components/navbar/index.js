@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const NavWrap = styled.div`
+  background: transparent;
   color: #212121;
   display: flex;
   flex-direction: row;
@@ -10,6 +11,7 @@ const NavWrap = styled.div`
   align-items: center;
   height: 115px;
   width: 100%;
+  z-index: 1;
 `;
 
 const NavLink = styled(Link)`
