@@ -46,7 +46,7 @@ const Navigation = () => {
           <Text>Search</Text>
         </NavItem>
       </NavLink>
-      <NavLink to="/" underlayColor="#f0f4f7">
+      <NavLink to="/projects" underlayColor="#f0f4f7">
         <NavItem>
           <Icon name="clipboard-outline" width={20} height={20} fill="black" />
           <Text>Projects</Text>

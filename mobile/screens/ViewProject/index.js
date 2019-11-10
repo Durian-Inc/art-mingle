@@ -171,7 +171,7 @@ const ViewText = styled.Text`
   text-align: center;
 `;
 
-const ProjectView = () => {
+const ViewProject = () => {
   const [liked, setLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -301,4 +301,4 @@ const ProjectView = () => {
   );
 };
 
-export { ProjectView };
+export { ViewProject };
