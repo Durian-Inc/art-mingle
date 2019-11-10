@@ -152,6 +152,8 @@ const AppBody = () => {
     executeMe();
   }
 
+  console.disableYellowBox = true;
+
   useEffect(() => {
     if (groupError) {
       console.log(groupError);
