@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useMutation } from "@apollo/react-hooks";
 import { useGlobal } from "reactn";
 import { View, ScrollView, FlatList } from "react-native";
 import { Link, Route } from "react-router-native";
@@ -7,6 +8,8 @@ import { Icon } from "react-native-eva-icons";
 import { Navigation } from "../../components/Navigation";
 import styled from "styled-components";
 import { GroupModal } from "../../components/GroupModal";
+
+import { JOIN_GROUP } from "../../utils/helpers";
 
 const HomeWrapper = styled.View`
   flex: 1;
@@ -49,10 +52,14 @@ const ButtonText = styled.Text`
 `;
 
 const Group = ({ group }) => {
-  const [joined, setJoined] = useState(false);
+  const [ curUser ] = useGlobal("curUser");
+  const [joined, setJoined] = useState(curUser.groups.findIndex((i) => i.id === group.id) >= 0);
+  const [joinGroup] = useMutation(JOIN_GROUP);
 
-  const onJoin = () => {
+  const onJoin = async () => {
     // Do nothing for now
+    console.log(await joinGroup({variables: {id: group.id}}));
+    setJoined(true)
   };
 
   return (
@@ -64,18 +71,17 @@ const Group = ({ group }) => {
           <Members>{group.users.length}</Members>
         </MemRow>
       </View>
-      {!joined && (
-        <ButtonContainer onPress={() => setJoined(true)}>
+      {!joined &&
+        <ButtonContainer onPress={() => onJoin()}>
           <ButtonText>Join</ButtonText>
-        </ButtonContainer>
-      )}
-      {joined && (
+        </ButtonContainer>}
+      {joined &&
         <ButtonContainer>
           <Link to={`/groups/${group.id}`}>
             <ButtonText>View</ButtonText>
           </Link>
         </ButtonContainer>
-      )}
+      }
     </GroupWrapper>
   );
 };

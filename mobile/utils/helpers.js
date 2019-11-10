@@ -89,6 +89,9 @@ export const GET_ME_QUERY = gql`
       firstName
       lastName
       profilePictureUrl
+      groups {
+        id
+      }
       following {
         firstName
         lastName
@@ -158,6 +161,7 @@ export const ADD_LIKE = gql`
     }
   }
 `;
+
 export const REMOVE_LIKE = gql`
   mutation RemoveLike($submission: String!) {
     removeLike(submission: $submission) {
@@ -176,6 +180,14 @@ export const ADD_FOLLOW = gql`
 export const REMOVE_FOLLOW = gql`
   mutation RemoveFollow($user: String!) {
     removeFollow(user: $user) {
+      id
+    }
+  }
+`;
+
+export const JOIN_GROUP = gql`
+  mutation joinGroup($id: String!) {
+    joinGroup(id: $id) {
       id
     }
   }
