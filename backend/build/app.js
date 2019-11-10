@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const cors_1 = __importDefault(require("@koa/cors"));
+const koa_1 = __importDefault(require("koa"));
+const koa_bodyparser_1 = __importDefault(require("koa-bodyparser"));
+const koa_logger_1 = __importDefault(require("koa-logger"));
+const config_1 = require("./config");
+const auth_1 = require("./middleware/auth");
+const routes_1 = require("./routes");
+const app = new koa_1.default();
+exports.app = app;
+app.keys = [config_1.config.SECRET_APP_KEY];
+app.use(koa_bodyparser_1.default());
+app.use(cors_1.default());
+app.use(koa_logger_1.default());
+app.use(auth_1.passport.initialize());
+app.use(auth_1.passport.session());
+app.use(auth_1.authFromBearer);
+app.use(routes_1.router.routes());
+app.use(routes_1.router.allowedMethods());

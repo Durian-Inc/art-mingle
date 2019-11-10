@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  art_mingle_db:
+    image: "postgres:11"
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    networks:
+      - db_nw
+    environment:
+      - POSTGRES_DB=art_mingle
+      - POSTGRES_USER=art_mingle
+  art_mingle_web:
+    # Testing migrations
+    # command: bash -c "yarn build && yarn start:prod"
+    command: yarn start:dev
+    build: ./backend
+    volumes:
+      - ./backend:/server
+    environment:
+      - DB_HOST=art_mingle_db
+      - DB_USERNAME=art_mingle
+    depends_on:
+      - art_mingle_db
