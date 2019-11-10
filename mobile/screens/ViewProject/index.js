@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useGlobal } from "reactn";
-import { View, ScrollView, Button, StyleSheet, FlatList, Linking } from "react-native";
+import {
+  View,
+  ScrollView,
+  Button,
+  StyleSheet,
+  FlatList,
+  Linking
+} from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import styled from "styled-components";
@@ -185,40 +192,37 @@ const Learning = props => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.id}
         data={props.data}
-        renderItem={
-          ({ item }) => (
-            <CardWrapper
-              style={{ marginRight: 20 }}
+        renderItem={({ item }) => (
+          <CardWrapper style={{ marginRight: 20 }}>
+            <Card
+              onPress={() => loadInBrowser(item.url)}
+              style={{
+                backgroundColor: colors[Math.floor(Math.random() * 5)]
+              }}
             >
-              <Card
-                onPress={() => loadInBrowser(item.url)}
+              <LinearGradient
+                colors={["rgba(255,255,255,0.8)", "transparent"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 style={{
-                  backgroundColor: colors[Math.floor(Math.random() * 5)]
+                  padding: 50,
+                  alignItems: "center",
+                  borderRadius: 15
                 }}
-              >
-                <LinearGradient
-                  colors={["rgba(255,255,255,0.8)", "transparent"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={{
-                    padding: 50,
-                    alignItems: "center",
-                    borderRadius: 15
-                  }}
-                ></LinearGradient>
-                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  {item.type === "video" && (
-                    <Icon name="play-circle-outline" width={40} height={40} />
-                  )}
-                  {item.type === "link" && (
-                    <Icon name="file-text-outline" width={40} height={40} />
-                  )}
-                </View>
-              </Card>
-              <CardTitle p>{item.description}</CardTitle>
-            </CardWrapper>
-          )
-        } />
+              ></LinearGradient>
+              <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
+                {item.type === "video" && (
+                  <Icon name="play-circle-outline" width={40} height={40} />
+                )}
+                {item.type === "link" && (
+                  <Icon name="file-text-outline" width={40} height={40} />
+                )}
+              </View>
+            </Card>
+            <CardTitle p>{item.description}</CardTitle>
+          </CardWrapper>
+        )}
+      />
     </View>
   );
 };
@@ -254,7 +258,9 @@ const Followers = props => {
                   <FollowerText p style={{ marginLeft: -3 }}>
                     {i === props.data.length - 1 && count
                       ? "+" + count
-                      : (follower.firstName[0] + follower.lastName[0]).toUpperCase()}
+                      : (
+                          follower.firstName[0] + follower.lastName[0]
+                        ).toUpperCase()}
                   </FollowerText>
                 </Follower>
               );
@@ -268,32 +274,33 @@ const Followers = props => {
   }
 };
 
-const ViewProject = (props) => {
-  const [ followingSubmissions ] = useGlobal("followingSubmissions");
+const ViewProject = props => {
+  const [followingSubmissions] = useGlobal("followingSubmissions");
   const [liked, setLiked] = useState(false);
   const [modalShown, setModalShown] = useState(false);
   const [project, setProject] = useState({});
   const [resources, setResources] = useState([]);
-  const [ following, setFollowing ] = useState([]);
+  const [following, setFollowing] = useState([]);
   const { id } = props.match.params;
 
-  const { error, data, loading } = useQuery(GET_PROJECT_QUERY, {variables: {id}})
+  const { error, data, loading } = useQuery(GET_PROJECT_QUERY, {
+    variables: { id }
+  });
 
   useEffect(() => {
-    if (error){
-      console.log(error)
-    } else if(!loading) {
+    if (error) {
+      console.log(error);
+    } else if (!loading) {
       setProject(data.project);
       setResources(data.project.resources);
     }
-  }, [loading])
-
+  }, [loading]);
 
   useEffect(() => {
     setFollowing(
-      followingSubmissions.filter((submission) => submission.project.id === id)
-    )
-  }, [])
+      followingSubmissions.filter(submission => submission.project.id === id)
+    );
+  }, []);
 
   const handleLikeClick = () => {
     setLiked(!liked);
@@ -327,17 +334,25 @@ const ViewProject = (props) => {
         <ProjectTitleWrapper>
           <View>
             <ProjectTitle p>{project.name}</ProjectTitle>
-            <Text p>Ends {project.deadline && new Date(project.deadline).toLocaleDateString()}</Text>
+            <Text p>
+              Ends{" "}
+              {project.deadline &&
+                new Date(project.deadline).toLocaleDateString()}
+            </Text>
           </View>
           {project.category === "music" && <ProjectIcon name="mic-outline" />}
-          {project.category === "art" && <ProjectIcon name="color-palette-outline" />}
-          {project.category === "poetry" && <ProjectIcon name="edit-2-outline" />}
+          {project.category === "art" && (
+            <ProjectIcon name="color-palette-outline" />
+          )}
+          {project.category === "poetry" && (
+            <ProjectIcon name="edit-2-outline" />
+          )}
         </ProjectTitleWrapper>
       </ProjectHeader>
       <ProjectInfo>
         <Description p>{project.description}</Description>
         <SectionHeader p>Learn</SectionHeader>
-        <Learning data={resources}/>
+        <Learning data={resources} />
         <Followers data={following} />
         <ViewContainer>
           <Link to="/projects/1/submissions">
@@ -345,7 +360,11 @@ const ViewProject = (props) => {
           </Link>
         </ViewContainer>
       </ProjectInfo>
-      <SubmitModal visible={modalShown} setVisible={setModalShown} />
+      <SubmitModal
+        project={id}
+        visible={modalShown}
+        setVisible={setModalShown}
+      />
     </ProjectWrapper>
   );
 };

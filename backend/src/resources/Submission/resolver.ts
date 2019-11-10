@@ -38,4 +38,49 @@ export class SubmissionResolver {
       .create({ name, url, color: "#ff0000", user, project })
       .save();
   }
+
+  @Authorized()
+  @Mutation(() => Submission)
+  public async addLike(
+    @Arg("submission") submissionId: string
+  ): Promise<Submission> {
+    const submission: Submission = await this.submissionRepo.findOneOrFail({
+      id: submissionId
+    });
+    const user: User = await this.userRepo.findOneOrFail({
+      email: "tdong@test.com"
+    });
+    const likers: User[] | undefined = await submission.likers;
+    if (likers) {
+      if (likers.findIndex(i => i.id === user.id) === -1) {
+        likers.push(user);
+        submission.likers = likers;
+      }
+    } else {
+      submission.likers = [user];
+    }
+    return submission.save();
+  }
+
+  @Authorized()
+  @Mutation(() => Submission)
+  public async removeLike(
+    @Arg("submission") submissionId: string
+  ): Promise<Submission> {
+    const submission: Submission = await this.submissionRepo.findOneOrFail({
+      id: submissionId
+    });
+    const user: User = await this.userRepo.findOneOrFail({
+      email: "tdong@test.com"
+    });
+    const likers: User[] | undefined = await submission.likers;
+    if (likers) {
+      const index: number = likers.findIndex(i => i.id === user.id);
+      if (index != -1) {
+        likers.splice(index, 1);
+        submission.likers = likers;
+      }
+    }
+    return submission.save();
+  }
 }

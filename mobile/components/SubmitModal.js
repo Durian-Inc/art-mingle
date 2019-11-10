@@ -11,6 +11,7 @@ import styled from "styled-components";
 import * as DocumentPicker from "expo-document-picker";
 
 import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
 
 const CREATE_SUBMISSION = gql`
   mutation CreateSubmission($project: String!, $url: String!, $name: String!) {
@@ -35,10 +36,11 @@ const Buttons = styled.View`
   flex-direction: row;
 `;
 
-const SubmitModal = ({ visible, setVisible }) => {
+const SubmitModal = ({ project, visible, setVisible }) => {
   const [status, setStatus] = useState("");
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
+  const [createSubmission, { data }] = useMutation(CREATE_SUBMISSION);
 
   const uploadImage = async uri => {
     const response = await fetch(uri);
@@ -67,12 +69,13 @@ const SubmitModal = ({ visible, setVisible }) => {
       },
       function(error) {
         // Handle unsuccessful uploads
+        setStatus("error");
       },
       function() {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         ref.snapshot.ref.getDownloadURL().then(downloadURL => {
-          useMutation(CREATE_SUBMISSION, {
+          createSubmission({
             variables: { name, project, url: downloadURL }
           });
           setStatus("success");
@@ -84,6 +87,8 @@ const SubmitModal = ({ visible, setVisible }) => {
   };
   if (status === "success") {
     setVisible(false);
+  } else if (status == "error") {
+    alert("ahhh");
   }
   return (
     <Modal
