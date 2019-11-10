@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, Button, StyleSheet } from "react-native";
+import { View, ScrollView, Linking } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import styled from "styled-components";
@@ -7,6 +7,106 @@ import { Icon } from "react-native-eva-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
+
+const data = {
+  title: 'Sing-off',
+  date: 'Dec. 12',
+  desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
+  type: 'art',
+  learning: [
+    {
+      title: 'How to hit a sick dab',
+      type: 'video',
+      link: 'https://google.com',
+      id: '1'
+    },
+    {
+      title: 'Here\'s some free shit',
+      type: 'link',
+      link: 'https://google.com',
+      id: '2'
+    },
+    {
+      title: 'AAAAAAA',
+      type: 'link',
+      link: 'https://google.com',
+      id: '3'
+    },
+    {
+      title: 'BBBBBBBBB',
+      type: 'video',
+      link: 'https://google.com',
+      id: '4'
+    }
+  ],
+  followers: [
+    {
+      fName: 'Kevin',
+      lName: 'Schoonover',
+      id: '1'
+    },
+    {
+      fName: 'Clay',
+      lName: 'McGinnis',
+      id: '2'
+    },
+    {
+      fName: 'David',
+      lName: 'Gardiner',
+      id: '3'
+    },
+    {
+      fName: 'Tommy',
+      lName: 'Dong',
+      id: '4'
+    },
+    {
+      fName: 'Gavin',
+      lName: 'Lewis',
+      id: '5'
+    },
+    {
+      fName: 'Catherine',
+      lName: 'Sauer',
+      id: '6'
+    },
+    {
+      fName: 'Bob',
+      lName: 'Ross',
+      id: '7'
+    },
+    {
+      fName: 'Carl',
+      lName: 'Sagan',
+      id: '8'
+    },
+    {
+      fName: 'Chris',
+      lName: 'Gu',
+      id: '9'
+    },
+    {
+      fName: 'Ricardo',
+      lName: 'Morales',
+      id: '10'
+    },
+    {
+      fName: 'Clayton',
+      lName: 'Price',
+      id: '11'
+    },
+    {
+      fName: 'Anna',
+      lName: 'Panckiewicz',
+      id: '12'
+    },
+    {
+      fName: 'Patrick',
+      lName: 'Taylor',
+      id: '13'
+    },
+  ]
+}
 
 const ProjectWrapper = styled.View`
   flex: 1;
@@ -103,17 +203,10 @@ const CardsWrapper = styled.ScrollView`
 
 const CardWrapper = styled.View`
   align-items: center;
-  margin-right: 20px;
   margin-left: 10px;
 `
 
-const LastCardWrapper = styled.View`
-  align-items: center;
-  margin-right: 70px;
-  margin-left: 10px;
-`
-
-const Card = styled.View`
+const Card = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   margin: 12px 0 15px 0;
@@ -171,6 +264,66 @@ const ViewText = styled.Text`
   text-align: center;
 `;
 
+const Learning = (props) => {
+  loadInBrowser = (url) => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      }
+    });
+  };
+
+  return (
+    <View>
+      <CardsWrapper horizontal showsHorizontalScrollIndicator={false}>
+        {props.data.map((card, i) => {
+          return (
+            <CardWrapper style={{ marginRight: (i === props.data.length - 1) ? 70 : 20 }} key={card.id}>
+              <Card onPress={() => loadInBrowser(card.link)} style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
+                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
+                </LinearGradient>
+                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
+                  {card.type === "video" && <Icon name="play-circle-outline" width={40} height={40} />}
+                  {card.type === "link" && <Icon name="file-text-outline" width={40} height={40} />}
+                </View>
+              </Card>
+              <CardTitle p>{card.title}</CardTitle>
+            </CardWrapper>
+          );
+        })}
+      </CardsWrapper>
+    </View>
+  );
+}
+
+const Followers = (props) => {
+  var count = 0;
+  if(!props.data.length) {
+    return (<View></View>)
+  } else {
+    return (
+      <View>
+        <SectionHeader p>Followers</SectionHeader>
+        <FollowerWrapper>
+          {props.data.map((follower, i) => {
+            if (i < 10 || i === props.data.length - 1) {
+              return (
+                <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }} key={follower.id}>
+                  <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
+                  </LinearGradient>
+                  <FollowerText p style={{ marginLeft: -3 }}>{(i === props.data.length - 1 && count) ? "+" + (count) : (follower.fName[0] + follower.lName[0]).toUpperCase()}</FollowerText>
+                </Follower>
+              );
+            } else {
+              count++;
+            }
+          })}
+        </FollowerWrapper>
+      </View>
+    );
+  }
+}
+
 const ViewProject = () => {
   const [liked, setLiked] = useState(false);
 
@@ -194,107 +347,23 @@ const ViewProject = () => {
         </IconWrapper>
         <ProjectTitleWrapper>
           <View>
-            <ProjectTitle p>Sing Off</ProjectTitle>
-            <Text p>Due Dec. 12</Text>
+            <ProjectTitle p>{data.title}</ProjectTitle>
+            <Text p>Ends {data.date}</Text>
           </View>
-          <ProjectIcon name="mic-outline" />
+          {data.type === "music" && <ProjectIcon name="mic-outline" />}
+          {data.type === "art" && <ProjectIcon name="color-palette-outline" />}
+          {data.type === "poetry" && <ProjectIcon name="edit-2-outline" />}
         </ProjectTitleWrapper>
       </ProjectHeader>
       <ProjectInfo>
-        <Description p>
-          Showcase your singing skills in this week's audio content! Feel free
-          to go acapella or add some background music, anything goes!
-        </Description>
+        <Description p>{data.desc}</Description>
         <SectionHeader p>Learn</SectionHeader>
-        <View>
-          <CardsWrapper horizontal showsHorizontalScrollIndicator={false}>
-            <CardWrapper>
-              <Card style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
-                </LinearGradient>
-                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  <Icon name="play-circle-outline" width={40} height={40} />
-                </View>
-              </Card>
-              <CardTitle p>How to hit that pitch</CardTitle>
-            </CardWrapper>
-            <CardWrapper>
-              <Card style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
-                </LinearGradient>
-                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  <Icon name="file-text-outline" width={40} height={40} />
-                </View>
-              </Card>
-              <CardTitle p>Free recording programs</CardTitle>
-            </CardWrapper>
-            <CardWrapper>
-              <Card style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
-                </LinearGradient>
-                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  <Icon name="play-circle-outline" width={40} height={40} />
-                </View>
-              </Card>
-              <CardTitle p>Another test video</CardTitle>
-            </CardWrapper>
-            <LastCardWrapper>
-              <Card style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
-                </LinearGradient>
-                <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  <Icon name="file-text-outline" width={40} height={40} />
-                </View>
-              </Card>
-              <CardTitle p>How to not suck</CardTitle>
-            </LastCardWrapper>
-          </CardsWrapper>
-        </View>
-        <SectionHeader p>Followers</SectionHeader>
-        <FollowerWrapper>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>{Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2).toUpperCase()}</FollowerText>
-          </Follower>
-          <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-            <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-            </LinearGradient>
-            <FollowerText p style={{ marginLeft: -3 }}>+5</FollowerText>
-          </Follower>
-        </FollowerWrapper>
+        <Learning data={data.learning}/>
+        <Followers data={data.followers} />
         <ViewContainer>
-          <ViewText>View All Submissions</ViewText>
+          <Link to="/projects/1/submissions">
+            <ViewText>View All Submissions</ViewText>
+          </Link>
         </ViewContainer>
       </ProjectInfo>
     </ProjectWrapper>

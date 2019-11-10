@@ -104,7 +104,7 @@ const AppBody = () => {
       <Content>
         <Route exact path="/" component={Home} />
         <Route exact path="/projects" component={ListProjects} />
-        <Route path="/projects/:id" component={ViewProject} />
+        <Route exact path="/projects/:id" component={ViewProject} />
         <Route path="/projects/:id/submissions" component={About} />
         <Route path="/search" component={Search} />
         <Route path="/groups/:id" component={Topics} />
