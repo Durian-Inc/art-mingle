@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobal } from "reactn";
-import { View, ScrollView, FlatList } from "react-native";
+import { View } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
@@ -76,12 +76,12 @@ const SubmissionList = styled.FlatList`
 `;
 
 const Home = () => {
-  const [ projects ] = useGlobal("projects");
-  const [ curUser ] = useGlobal("curUser");
-
-  const id = curUser ? curUser.id : undefined
-
-  const [ followingSubmissions ] = useGlobal("followingSubmissions");
+  const [user] = useGlobal("curUser");
+  const [projects] = useGlobal("projects");
+  const [followingSubmissions] = useGlobal("followingSubmissions");
+  if (!user) {
+    return <Text h2>Loading</Text>;
+  }
   return (
     <HomeWrapper>
       <HomeScroll>
@@ -91,7 +91,7 @@ const Home = () => {
               <Text h3>Projects</Text>
               <Text>Global</Text>
             </ProjectsHeader>
-            <Link to={`/users/${id}`}>
+            <Link to={`/users/${user.id}`}>
               <ProfileIcon>
                 <Icon name="person-outline" width={32} height={32} />
               </ProfileIcon>

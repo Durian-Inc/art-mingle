@@ -14,18 +14,28 @@ export const GET_USERS = gql`
 `;
 
 export const GET_USER = gql`
-  query users($id: String!) {
+  query user($id: String!) {
     user(id: $id) {
       id
       firstName
       lastName
+      email
+      emailVerified
+      profilePictureUrl
+      dateJoined
       submissions {
         id
+        dateSubmitted
         name
+        url
+        user {
+          firstName
+          lastName
+          id
+        }
         project {
           id
           name
-          category
         }
         likers {
           id
@@ -34,11 +44,18 @@ export const GET_USER = gql`
       }
       followers {
         id
+        firstName
+        lastName
+      }
+      following {
+        id
+        firstName
+        lastName
+        profilePictureUrl
       }
     }
   }
 `;
-
 
 export const GET_GROUPS = gql`
   query groups {
@@ -144,6 +161,21 @@ export const ADD_LIKE = gql`
 export const REMOVE_LIKE = gql`
   mutation RemoveLike($submission: String!) {
     removeLike(submission: $submission) {
+      id
+    }
+  }
+`;
+
+export const ADD_FOLLOW = gql`
+  mutation AddFollow($user: String!) {
+    addFollow(user: $user) {
+      id
+    }
+  }
+`;
+export const REMOVE_FOLLOW = gql`
+  mutation RemoveFollow($user: String!) {
+    removeFollow(user: $user) {
       id
     }
   }

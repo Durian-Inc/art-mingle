@@ -1,7 +1,7 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { ApolloProvider, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { AsyncStorage } from "react-native";
-import { AuthSession } from 'expo';
+import { AuthSession } from "expo";
 import styled from "styled-components";
 
 import { config } from "./config";
@@ -31,11 +31,16 @@ import {
  * Converts an object to a query string.
  */
 function toQueryString(params) {
-  return '?' + Object.entries(params)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join('&');
+  return (
+    "?" +
+    Object.entries(params)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&")
+  );
 }
-
 
 const About = () => <Text>About</Text>;
 
@@ -84,22 +89,25 @@ const App = () => {
     const queryParams = toQueryString({
       client_id: config.AUTH0_CLIENT_ID,
       redirect_uri: redirectUrl,
-      response_type: 'id_token', // id_token will return a JWT token
-      scope: 'openid email profile', // retrieve the user's profile
-      nonce: 'nonce', // ideally, this will be a random value
+      response_type: "id_token", // id_token will return a JWT token
+      scope: "openid email profile", // retrieve the user's profile
+      nonce: "nonce" // ideally, this will be a random value
     });
     const authUrl = `https://${config.AUTH0_DOMAIN}/authorize` + queryParams;
 
     // Perform the authentication
     const response = await AuthSession.startAsync({ authUrl });
-    if (response.type === 'success') {
+    if (response.type === "success") {
       await handleResponse(response.params);
     }
   };
 
-  handleResponse = async (response) => {
+  handleResponse = async response => {
     if (response.error) {
-      Alert('Authentication error', response.error_description || 'something went wrong');
+      Alert(
+        "Authentication error",
+        response.error_description || "something went wrong"
+      );
       return;
     }
 
@@ -123,30 +131,28 @@ const App = () => {
 
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
-  const [ done ] = useGlobal("done");
+  const [done] = useGlobal("done");
   const [ready, setReady] = useState(false);
   const setUsers = useGlobal("users")[1];
   const setGroups = useGlobal("groups")[1];
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
-  const [executeMe, { error: meError, loading: meLoading, data: meData }] = useLazyQuery(
-    GET_ME_QUERY
-  );
-  const [executeProject, {
-    error: projectError,
-    loading: projectLoading,
-    data: projectData
-  }] = useLazyQuery(GET_PROJECTS);
-  const [executeUsers, {
-    error: usersError,
-    loading: usersLoading,
-    data: usersData
-  }] = useLazyQuery(GET_USERS);
-  const [executeGroups, {
-    error: groupError,
-    loading: groupLoading,
-    data: groupData
-  }] = useLazyQuery(GET_GROUPS);
+  const [
+    executeMe,
+    { error: meError, loading: meLoading, data: meData }
+  ] = useLazyQuery(GET_ME_QUERY);
+  const [
+    executeProject,
+    { error: projectError, loading: projectLoading, data: projectData }
+  ] = useLazyQuery(GET_PROJECTS);
+  const [
+    executeUsers,
+    { error: usersError, loading: usersLoading, data: usersData }
+  ] = useLazyQuery(GET_USERS);
+  const [
+    executeGroups,
+    { error: groupError, loading: groupLoading, data: groupData }
+  ] = useLazyQuery(GET_GROUPS);
 
   if (done && !meData && !meLoading) {
     executeMe();
@@ -173,7 +179,6 @@ const AppBody = () => {
     } else if (!projectLoading && ready) {
       executeProject();
     }
-
   }, [projectLoading, ready]);
 
   // Find all the current users
@@ -209,7 +214,7 @@ const AppBody = () => {
         setFollowingSubmissions(
           followingSubmissions.sort((a, b) => b.date - a.date)
         );
-        setReady(true)
+        setReady(true);
       }
     }
   }, [meLoading, done]);

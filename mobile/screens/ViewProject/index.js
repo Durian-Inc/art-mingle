@@ -291,7 +291,7 @@ const ViewProject = props => {
 
   useEffect(() => {
     if (error) {
-      console.log(error);
+      alert(error);
     } else if (!loading) {
       setProject(data.project);
       setResources(data.project.resources);
@@ -324,7 +324,7 @@ const ViewProject = props => {
             <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
           </Link>
           <View style={{ flexDirection: "row" }}>
-            <ButtonContainer style={{width: 125}} onPress={handleAdd}>
+            <ButtonContainer style={{ width: 125 }} onPress={handleAdd}>
               <ButtonText>Add to Group</ButtonText>
             </ButtonContainer>
             <ButtonContainer onPress={handleSubmit}>
@@ -373,10 +373,7 @@ const ViewProject = props => {
         visible={modalShown}
         setVisible={setModalShown}
       />
-      <AddToGroupModal
-        visible={addModalShown}
-        setVisible={setAddModalShown}
-      />
+      <AddToGroupModal visible={addModalShown} setVisible={setAddModalShown} />
     </ProjectWrapper>
   );
 };

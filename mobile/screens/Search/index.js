@@ -64,16 +64,18 @@ const Group = ({ group }) => {
           <Members>{group.users.length}</Members>
         </MemRow>
       </View>
-      {!joined && 
+      {!joined && (
         <ButtonContainer onPress={() => setJoined(true)}>
           <ButtonText>Join</ButtonText>
-        </ButtonContainer>}
-      {joined && 
+        </ButtonContainer>
+      )}
+      {joined && (
         <ButtonContainer>
-          <Link to="/groups/1">
+          <Link to={`/groups/${group.id}`}>
             <ButtonText>View</ButtonText>
           </Link>
-        </ButtonContainer>}
+        </ButtonContainer>
+      )}
     </GroupWrapper>
   );
 };
@@ -122,8 +124,8 @@ const TabLink = styled(Link)`
 const Search = ({ match }) => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ users ] = useGlobal("users");
-  const [ groups ] = useGlobal("groups");
+  const [users] = useGlobal("users");
+  const [groups] = useGlobal("groups");
   const [mUsers, setMUsers] = useState(users);
   const [mGroups, setMGroups] = useState(groups);
 
@@ -138,7 +140,7 @@ const Search = ({ match }) => {
       setMGroups(temp);
 
       const temp2 = users.filter(item => {
-        const name = `${item.firstName} ${item.lastName}`.toLowerCase()
+        const name = `${item.firstName} ${item.lastName}`.toLowerCase();
         if (name.includes(search.toLowerCase())) {
           return item;
         }
@@ -154,7 +156,7 @@ const Search = ({ match }) => {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  `
+  `;
 
   const CombinedList = () => {
     const [modalShown, setModalShown] = useState(false);
@@ -165,7 +167,7 @@ const Search = ({ match }) => {
 
     return (
       <View>
-        <GroupWrapper >
+        <GroupWrapper>
           <Text h4>Groups</Text>
           <ButtonContainer onPress={handleCreate}>
             <ButtonText>Create</ButtonText>
