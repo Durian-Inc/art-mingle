@@ -16,6 +16,8 @@ const NavWrapper = styled.View`
   padding-bottom: 30px;
   z-index: 1000;
   background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25)
+  elevation: 6;
 `;
 
 const NavLink = styled(Link)`

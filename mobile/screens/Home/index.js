@@ -74,8 +74,8 @@ const ProjectSquare = ({ project }) => {
 const SubmissionList = styled.FlatList``;
 
 const Home = () => {
-  const [ projects ] = useGlobal("projects");
-  const [ followingSubmissions ] = useGlobal("followingSubmissions");
+  const [projects] = useGlobal("projects");
+  const [followingSubmissions] = useGlobal("followingSubmissions");
   return (
     <HomeWrapper>
       <HomeScroll>
@@ -100,18 +100,15 @@ const Home = () => {
           renderItem={({ item }) => <ProjectSquare project={item} />}
           keyExtractor={item => item.id}
         />
-        <Constrain style={{ marginBottom: 100 }}>
+        <Constrain>
           <Text h3>Followed</Text>
-          <SubmissionList
-            data={followingSubmissions}
-            renderItem={
-              ({ item }) => (
-                <Submission submission={item} />
-              )
-            }
-            keyExtractor={item => item.id}
-          />
         </Constrain>
+        <SubmissionList
+          data={followingSubmissions}
+          renderItem={({ item }) => <Submission submission={item} />}
+          keyExtractor={item => item.id}
+        />
+        <Constrain style={{ marginBottom: 100 }} />
       </HomeScroll>
 
       <Navigation />

@@ -1,12 +1,13 @@
 import React from "react";
 import { useGlobal } from "reactn";
+import { View } from "react-native";
 import { Text } from "react-native-elements";
 import { Icon } from "react-native-eva-icons";
 import styled from "styled-components";
 
 const SubWrapper = styled.View`
   flex-direction: row;
-  margin: 15px 0;
+  margin: 20px 0 20px 30px;
 `;
 const SubPreview = styled.View`
   width: 90px;
@@ -17,7 +18,9 @@ const SubPreview = styled.View`
   elevation: 6;
   margin-right: 20px;
 `;
-const SubInfo = styled.View``;
+const SubInfo = styled.View`
+  align-content: space-between;
+`;
 const SubLikes = styled.View`
   flex-direction: row;
 `;
@@ -27,11 +30,13 @@ const Submission = ({ submission }) => {
     <SubWrapper>
       <SubPreview color={submission.color} />
       <SubInfo>
-        <Text>{submission.name}</Text>
-        <Text>{submission.user}</Text>
-        <Text>for {submission.project}</Text>
+        <View>
+          <Text>{submission.name}</Text>
+          <Text>{submission.user}</Text>
+          <Text>for {submission.project}</Text>
+        </View>
         <SubLikes>
-          <Icon name="heart-outline" height={20} width={20} />
+          <Icon name="heart" height={20} width={20} />
           <Text>{submission.likes}</Text>
         </SubLikes>
       </SubInfo>
@@ -39,4 +44,5 @@ const Submission = ({ submission }) => {
   );
 };
 
-export { Submission }
+export { Submission };
+
