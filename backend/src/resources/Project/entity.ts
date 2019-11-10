@@ -26,6 +26,10 @@ export class Project extends BaseEntity {
 
   @Field()
   @Column()
+  public description: string;
+
+  @Field()
+  @Column()
   public category: string;
 
   @Field()

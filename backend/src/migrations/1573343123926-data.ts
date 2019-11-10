@@ -37,6 +37,8 @@ export class data1573343123926 implements MigrationInterface {
 
     const project1: Project = await Project.create({
       name: "Sing-off",
+      description:
+        "Showcase your singing skills in this week's audio content! Feel free to go acapella or add some background music. Anything goes!",
       category: "music",
       color: "#46EAEA",
       deadline: new Date(new Date().getTime() + 30 * 60000),
@@ -50,6 +52,8 @@ export class data1573343123926 implements MigrationInterface {
 
     const project2: Project = await Project.create({
       name: "Sing-off II",
+      description:
+        "Showcase your singing skills in this week's audio content! Feel free to go acapella or add some background music, anything goes!",
       category: "music",
       color: "#46EAEA",
       deadline: new Date(new Date().getTime() + 30 * 86400000),
