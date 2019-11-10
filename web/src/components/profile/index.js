@@ -4,9 +4,12 @@ import styled from "styled-components";
 import { SmallCard } from "../card_small/index";
 
 const ProfilePage = styled.main`
+  background: #a1e9ff;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: center;
+  width: 100vw;
+  margin: -115px 0 0 0;
 `;
 
 const Bio = styled.div`
@@ -14,11 +17,18 @@ const Bio = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin: 0 0 40px 0;
+  width: 1098px;
 `;
 
 const ProfileText = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const WelcomeTitle = styled.h1`
+  font-size: 64px;
+  font-weight: normal;
+  margin: 115px 0 0 0;
 `;
 
 const Title = styled.h1`
@@ -44,11 +54,24 @@ const ProfileImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 115px 0 0 0;
 
   h1 {
     font-size: 64px;
     font-weight: normal;
   }
+`;
+
+const SubmitSection = styled.div`
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+`;
+
+const SubmitBound = styled.div`
+  width: 1098px;
 `;
 
 const Submissions = styled.div`
@@ -103,7 +126,7 @@ const Profile = ({
     <ProfilePage>
       <Bio>
         <ProfileText>
-          <Title>Welcome {username}!</Title>
+          <WelcomeTitle>Welcome {username}!</WelcomeTitle>
           <UserStat>Following {interactions} people</UserStat>
           <UserStat>{submissions_no} Submissions</UserStat>
         </ProfileText>
@@ -112,10 +135,14 @@ const Profile = ({
         </ProfileImage>
       </Bio>
 
-      <Title>Your Submissions</Title>
-      <Submissions>
-        {user_submissions}
-      </Submissions>
+      <SubmitSection>
+        <SubmitBound>
+          <Title>Your Submissions</Title>
+          <Submissions>
+            {user_submissions}
+          </Submissions>
+        </SubmitBound>
+      </SubmitSection>
     </ProfilePage>
   );
 };
