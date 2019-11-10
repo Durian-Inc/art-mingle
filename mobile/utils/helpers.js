@@ -23,6 +23,7 @@ export const GET_USER = gql`
         id
         name
         project {
+          id
           name
           category
         }

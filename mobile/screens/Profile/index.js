@@ -94,7 +94,6 @@ const Profile = (props) => {
     GET_USER, {variables: { id }}
   )
 
-
   const handleLikeClick = () => {
     setLiked(!liked);
   }
