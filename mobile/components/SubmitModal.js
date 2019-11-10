@@ -10,6 +10,16 @@ import "firebase/storage";
 import styled from "styled-components";
 import * as DocumentPicker from "expo-document-picker";
 
+import gql from "graphql-tag";
+
+const CREATE_SUBMISSION = gql`
+  mutation CreateSubmission($project: String!, $url: String!, $name: String!) {
+    createSubmission(project: $project, url: $url, name: $name) {
+      name
+    }
+  }
+`;
+
 const ModalWrapper = styled.View`
   align-items: center;
   justify-content: center;
@@ -61,7 +71,10 @@ const SubmitModal = ({ visible, setVisible }) => {
       function() {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        ref.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        ref.snapshot.ref.getDownloadURL().then(downloadURL => {
+          useMutation(CREATE_SUBMISSION, {
+            variables: { name, project, url: downloadURL }
+          });
           setStatus("success");
         });
       }

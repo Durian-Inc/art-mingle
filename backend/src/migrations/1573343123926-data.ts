@@ -96,36 +96,34 @@ export class data1573343123926 implements MigrationInterface {
 
     await Submission.create({
       name: "The Best",
-      category: "music",
       color: "#46EAEA",
-      likes: 25,
+      url: "https://source.unsplash.com/random/400x400",
+      likers: [tommy, david],
       user: clay,
       project: project2
     }).save();
 
     await Submission.create({
       name: "The Best III",
-      category: "music",
       color: "#46EAEA",
-      likes: 30,
+      url: "https://source.unsplash.com/random/400x400",
       user: david,
       project: project2
     }).save();
 
     await Submission.create({
       name: "The Best IIII",
-      category: "music",
       color: "#46EAEA",
-      likes: 12,
+      url: "https://source.unsplash.com/random/400x400",
       user: kevin,
       project: project1
     }).save();
 
     await Submission.create({
       name: "The Best II",
-      category: "music",
       color: "#46EAEA",
-      likes: 12,
+      url: "https://source.unsplash.com/random/400x400",
+      likers: [david, clay],
       user: tommy,
       project: project1
     }).save();

@@ -2,6 +2,8 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
   CreateDateColumn,
   Column,
   Entity,
@@ -29,21 +31,22 @@ export class Submission extends BaseEntity {
 
   @Field()
   @Column()
-  public category: string;
-
-  @Field()
-  @Column()
   public color: string;
 
   @Field()
   @Column()
-  public likes: number;
+  public url: string;
+
+  @JoinTable()
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, (user: User) => user.likes, { lazy: true })
+  public likers?: Lazy<User[]>;
 
   @Field(() => User)
-  @ManyToOne(() => User, user => user.submissions, { lazy: true })
-  user: Lazy<User>;
+  @ManyToOne(() => User, (user: User) => user.submissions, { lazy: true })
+  public user: Lazy<User>;
 
   @Field(() => Project)
   @ManyToOne(() => Project, project => project.submissions, { lazy: true })
-  project: Lazy<Project>;
+  public project: Lazy<Project>;
 }

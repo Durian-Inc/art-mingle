@@ -58,6 +58,12 @@ export class User extends BaseEntity {
   public readonly dateJoined: Date;
 
   @Field(() => [Submission])
+  @ManyToMany(() => Submission, (submission: Submission) => submission.likers, {
+    lazy: true
+  })
+  public likes: Lazy<Submission[]>;
+
+  @Field(() => [Submission])
   @OneToMany(() => Submission, (submissions: Submission) => submissions.user, {
     lazy: true
   })
