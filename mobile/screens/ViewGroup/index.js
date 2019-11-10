@@ -90,7 +90,7 @@ const data = [
 
 const GroupWrapper = styled.ScrollView`
   flex: 1;
-  align-items; center;
+  align-items: center;
   padding: 60px 30px 0 30px;
 `;
 
