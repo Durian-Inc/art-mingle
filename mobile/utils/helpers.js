@@ -101,6 +101,7 @@ export const GET_ME_QUERY = gql`
         deadline
       }
       following {
+        id
         firstName
         lastName
         submissions {
@@ -109,6 +110,7 @@ export const GET_ME_QUERY = gql`
           name
           url
           user {
+            id
             firstName
             lastName
           }
@@ -129,6 +131,7 @@ export const GET_ME_QUERY = gql`
 export const GET_PROJECT_QUERY = gql`
   query showProject($id: String!) {
     project(id: $id) {
+      id
       name
       description
       category
@@ -140,10 +143,12 @@ export const GET_PROJECT_QUERY = gql`
         name
         url
         user {
+          id
           firstName
           lastName
         }
         likers {
+          id
           firstName
         }
         project {

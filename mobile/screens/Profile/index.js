@@ -206,6 +206,7 @@ const Profile = () => {
                 );
               })
             : undefined}
+          <View style={{ paddingBottom: 120 }} />
         </ScrollView>
       </ProfileInfo>
       <Navigation />

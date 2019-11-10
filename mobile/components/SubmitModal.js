@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useGlobal } from "reactn";
 import { View, Modal, TouchableHighlight } from "react-native";
 import { Text, Button } from "react-native-elements";
 import { Input } from "react-native-elements";
@@ -12,6 +12,8 @@ import * as DocumentPicker from "expo-document-picker";
 
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+
+import { GET_USER } from "../utils/helpers";
 
 const CREATE_SUBMISSION = gql`
   mutation CreateSubmission($project: String!, $url: String!, $name: String!) {
@@ -59,13 +61,16 @@ const ButtonText = styled.Text`
 
 const TextInput = styled(Input)`
   padding: 0 10px;
-`
+`;
 
 const SubmitModal = ({ project, visible, setVisible }) => {
+  const [user] = useGlobal("curUser");
   const [status, setStatus] = useState("");
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
-  const [createSubmission, { data }] = useMutation(CREATE_SUBMISSION);
+  const [createSubmission] = useMutation(CREATE_SUBMISSION, {
+    refetchQueries: [{ query: GET_USER, variables: { id: user.id } }]
+  });
 
   const uploadImage = async uri => {
     const response = await fetch(uri);
@@ -124,10 +129,12 @@ const SubmitModal = ({ project, visible, setVisible }) => {
     >
       <ModalWrapper>
         <ModalView>
-          <ButtonContainer onPress={async () => {
-            const result = await DocumentPicker.getDocumentAsync();
-            setImage(result);
-          }}>
+          <ButtonContainer
+            onPress={async () => {
+              const result = await DocumentPicker.getDocumentAsync();
+              setImage(result);
+            }}
+          >
             <ButtonText>Choose file</ButtonText>
           </ButtonContainer>
           {image ? (
@@ -140,22 +147,23 @@ const SubmitModal = ({ project, visible, setVisible }) => {
             undefined
           )}
           <Text>Submission Name</Text>
-          <TextInput
-            onChangeText={text => setName(text)}
-            value={name}
-          />
+          <TextInput onChangeText={text => setName(text)} value={name} />
           <Buttons>
-            <ButtonContainer onPress={async () => {
-              if (image) uploadImage(image.uri);
-            }}>
+            <ButtonContainer
+              onPress={async () => {
+                if (image) uploadImage(image.uri);
+              }}
+            >
               <ButtonText>Submit</ButtonText>
             </ButtonContainer>
-            <ButtonContainer onPress={() => {
+            <ButtonContainer
+              onPress={() => {
                 setVisible(!visible);
               }}
-              type="clear">
+              type="clear"
+            >
               <ButtonText>Cancel</ButtonText>
-            </ButtonContainer>            
+            </ButtonContainer>
           </Buttons>
         </ModalView>
       </ModalWrapper>

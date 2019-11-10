@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ApolloProvider, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, ActivityIndicator } from "react-native";
 import { AuthSession } from "expo";
 import styled from "styled-components";
 
@@ -120,6 +120,7 @@ const App = () => {
 
   if (!done) {
     login();
+    return <ActivityIndicator />;
   }
 
   return (
@@ -131,32 +132,29 @@ const App = () => {
 
 const AppBody = () => {
   const setProjects = useGlobal("projects")[1];
-  const [done] = useGlobal("done");
-  const [ready, setReady] = useState(false);
   const setUsers = useGlobal("users")[1];
   const setGroups = useGlobal("groups")[1];
   const setCurUser = useGlobal("curUser")[1];
   const setFollowingSubmissions = useGlobal("followingSubmissions")[1];
-  const [
-    executeMe,
-    { error: meError, loading: meLoading, data: meData }
-  ] = useLazyQuery(GET_ME_QUERY);
-  const [
-    executeProject,
-    { error: projectError, loading: projectLoading, data: projectData }
-  ] = useLazyQuery(GET_PROJECTS);
-  const [
-    executeUsers,
-    { error: usersError, loading: usersLoading, data: usersData }
-  ] = useLazyQuery(GET_USERS);
-  const [
-    executeGroups,
-    { error: groupError, loading: groupLoading, data: groupData }
-  ] = useLazyQuery(GET_GROUPS);
-
-  if (done && !meData && !meLoading) {
-    executeMe();
-  }
+  const { error: meError, loading: meLoading, data: meData } = useQuery(
+    GET_ME_QUERY,
+    { pollInterval: 2000 }
+  );
+  const {
+    error: projectError,
+    loading: projectLoading,
+    data: projectData
+  } = useQuery(GET_PROJECTS, { skip: !meData });
+  const {
+    error: usersError,
+    loading: usersLoading,
+    data: usersData
+  } = useQuery(GET_USERS, { skip: !meData });
+  const {
+    error: groupError,
+    loading: groupLoading,
+    data: groupData
+  } = useQuery(GET_GROUPS, { skip: !meData });
 
   console.disableYellowBox = true;
 
@@ -165,10 +163,8 @@ const AppBody = () => {
       console.log(groupError);
     } else if (!groupLoading && groupData) {
       setGroups(groupData.groups);
-    } else if (!groupLoading && ready) {
-      executeGroups();
     }
-  }, [groupLoading, ready]);
+  }, [groupData]);
 
   // Find all the current project
   useEffect(() => {
@@ -176,10 +172,8 @@ const AppBody = () => {
       console.log(projectError);
     } else if (!projectLoading && projectData) {
       setProjects(projectData.projects);
-    } else if (!projectLoading && ready) {
-      executeProject();
     }
-  }, [projectLoading, ready]);
+  }, [projectData]);
 
   // Find all the current users
   useEffect(() => {
@@ -187,37 +181,32 @@ const AppBody = () => {
       console.log(usersError);
     } else if (!usersLoading && usersData) {
       setUsers(usersData.users);
-    } else if (!usersLoading && ready) {
-      executeUsers();
     }
-  }, [usersLoading, ready]);
+  }, [usersData]);
 
   // Collect the submissions for following users for the 'Followed' section
   useEffect(() => {
-    if (done) {
-      if (meError) {
-        console.log(meError);
-      } else if (!meLoading) {
-        const curUserData = meData.me;
-        setCurUser(curUserData);
+    if (meError) {
+      console.log(meError);
+    } else if (!meLoading && meData) {
+      const curUserData = meData.me;
+      setCurUser(curUserData);
 
-        let followingSubmissions = [];
-        curUserData.following.forEach(followingUser => {
-          followingUser.submissions.forEach(submission => {
-            followingSubmissions.push({
-              ...submission,
-              date: new Date(submission.dateSubmitted),
-              color: "#000"
-            });
+      let followingSubmissions = [];
+      curUserData.following.forEach(followingUser => {
+        followingUser.submissions.forEach(submission => {
+          followingSubmissions.push({
+            ...submission,
+            date: new Date(submission.dateSubmitted),
+            color: "#000"
           });
         });
-        setFollowingSubmissions(
-          followingSubmissions.sort((a, b) => b.date - a.date)
-        );
-        setReady(true);
-      }
+      });
+      setFollowingSubmissions(
+        followingSubmissions.sort((a, b) => b.date - a.date)
+      );
     }
-  }, [meLoading, done]);
+  }, [meData]);
 
   return (
     <NativeRouter>

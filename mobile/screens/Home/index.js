@@ -93,7 +93,6 @@ const Home = () => {
           <TopBar>
             <ProjectsHeader>
               <Text h3>Projects</Text>
-              <Text>Global</Text>
             </ProjectsHeader>
             <Link to={`/users/${user.id}`}>
               <ProfileIcon>
