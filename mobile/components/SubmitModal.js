@@ -28,13 +28,38 @@ const ModalWrapper = styled.View`
   background: rgba(0, 0, 0, 0.3);
 `;
 const ModalView = styled(View)`
+  align-items: center;
+  justify-content: center;
   width: 80%;
-  height: 50%;
+  padding: 10px 5px;
   background: white;
+  border-radius: 15px;
 `;
 const Buttons = styled.View`
   flex-direction: row;
+  margin-top: 10px;
 `;
+
+const ButtonContainer = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 5px;
+  border-radius: 10px;
+  border: 3px solid black;
+  background-color: transparent;
+  margin-right: 15px;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 15px;
+  color: black;
+  text-align: center;
+`;
+
+const TextInput = styled(Input)`
+  padding: 0 10px;
+`
 
 const SubmitModal = ({ project, visible, setVisible }) => {
   const [status, setStatus] = useState("");
@@ -99,14 +124,12 @@ const SubmitModal = ({ project, visible, setVisible }) => {
     >
       <ModalWrapper>
         <ModalView>
-          <TouchableHighlight
-            onPress={async () => {
-              const result = await DocumentPicker.getDocumentAsync();
-              setImage(result);
-            }}
-          >
-            <Text>Choose file</Text>
-          </TouchableHighlight>
+          <ButtonContainer onPress={async () => {
+            const result = await DocumentPicker.getDocumentAsync();
+            setImage(result);
+          }}>
+            <ButtonText>Choose file</ButtonText>
+          </ButtonContainer>
           {image ? (
             <Image
               source={{ uri: image.uri }}
@@ -116,25 +139,23 @@ const SubmitModal = ({ project, visible, setVisible }) => {
           ) : (
             undefined
           )}
-          <Input
-            label="Submission Name"
+          <Text>Submission Name</Text>
+          <TextInput
             onChangeText={text => setName(text)}
             value={name}
           />
           <Buttons>
-            <Button
-              onPress={async () => {
-                if (image) uploadImage(image.uri);
-              }}
-              title="Submit"
-            ></Button>
-            <Button
-              onPress={() => {
+            <ButtonContainer onPress={async () => {
+              if (image) uploadImage(image.uri);
+            }}>
+              <ButtonText>Submit</ButtonText>
+            </ButtonContainer>
+            <ButtonContainer onPress={() => {
                 setVisible(!visible);
               }}
-              type="clear"
-              title="Cancel"
-            ></Button>
+              type="clear">
+              <ButtonText>Cancel</ButtonText>
+            </ButtonContainer>            
           </Buttons>
         </ModalView>
       </ModalWrapper>
