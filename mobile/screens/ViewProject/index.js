@@ -4,109 +4,112 @@ import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import styled from "styled-components";
 import { Icon } from "react-native-eva-icons";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
-const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"]
+import { SubmitModal } from "../../components/SubmitModal";
+
+const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
 const data = {
-  title: 'Sing-off',
-  date: 'Dec. 12',
-  desc: 'Showcase your singing skills in this week\'s audio content! Feel free to go acapella or add some background music, anything goes!',
-  type: 'art',
+  title: "Sing-off",
+  date: "Dec. 12",
+  desc:
+    "Showcase your singing skills in this week's audio content! Feel free to go acapella or add some background music, anything goes!",
+  type: "art",
   learning: [
     {
-      title: 'How to hit a sick dab',
-      type: 'video',
-      link: 'https://google.com',
-      id: '1'
+      title: "How to hit a sick dab",
+      type: "video",
+      link: "https://google.com",
+      id: "1"
     },
     {
-      title: 'Here\'s some free shit',
-      type: 'link',
-      link: 'https://google.com',
-      id: '2'
+      title: "Here's some free shit",
+      type: "link",
+      link: "https://google.com",
+      id: "2"
     },
     {
-      title: 'AAAAAAA',
-      type: 'link',
-      link: 'https://google.com',
-      id: '3'
+      title: "AAAAAAA",
+      type: "link",
+      link: "https://google.com",
+      id: "3"
     },
     {
-      title: 'BBBBBBBBB',
-      type: 'video',
-      link: 'https://google.com',
-      id: '4'
+      title: "BBBBBBBBB",
+      type: "video",
+      link: "https://google.com",
+      id: "4"
     }
   ],
   followers: [
     {
-      fName: 'Kevin',
-      lName: 'Schoonover',
-      id: '1'
+      fName: "Kevin",
+      lName: "Schoonover",
+      id: "1"
     },
     {
-      fName: 'Clay',
-      lName: 'McGinnis',
-      id: '2'
+      fName: "Clay",
+      lName: "McGinnis",
+      id: "2"
     },
     {
-      fName: 'David',
-      lName: 'Gardiner',
-      id: '3'
+      fName: "David",
+      lName: "Gardiner",
+      id: "3"
     },
     {
-      fName: 'Tommy',
-      lName: 'Dong',
-      id: '4'
+      fName: "Tommy",
+      lName: "Dong",
+      id: "4"
     },
     {
-      fName: 'Gavin',
-      lName: 'Lewis',
-      id: '5'
+      fName: "Gavin",
+      lName: "Lewis",
+      id: "5"
     },
     {
-      fName: 'Catherine',
-      lName: 'Sauer',
-      id: '6'
+      fName: "Catherine",
+      lName: "Sauer",
+      id: "6"
     },
     {
-      fName: 'Bob',
-      lName: 'Ross',
-      id: '7'
+      fName: "Bob",
+      lName: "Ross",
+      id: "7"
     },
     {
-      fName: 'Carl',
-      lName: 'Sagan',
-      id: '8'
+      fName: "Carl",
+      lName: "Sagan",
+      id: "8"
     },
     {
-      fName: 'Chris',
-      lName: 'Gu',
-      id: '9'
+      fName: "Chris",
+      lName: "Gu",
+      id: "9"
     },
     {
-      fName: 'Ricardo',
-      lName: 'Morales',
-      id: '10'
+      fName: "Ricardo",
+      lName: "Morales",
+      id: "10"
     },
     {
-      fName: 'Clayton',
-      lName: 'Price',
-      id: '11'
+      fName: "Clayton",
+      lName: "Price",
+      id: "11"
     },
     {
-      fName: 'Anna',
-      lName: 'Panckiewicz',
-      id: '12'
+      fName: "Anna",
+      lName: "Panckiewicz",
+      id: "12"
     },
     {
-      fName: 'Patrick',
-      lName: 'Taylor',
-      id: '13'
-    },
+      fName: "Patrick",
+      lName: "Taylor",
+      id: "13"
+    }
   ]
-}
+};
 
 const ProjectWrapper = styled.View`
   flex: 1;
@@ -140,7 +143,7 @@ const ButtonText = styled.Text`
 
 const BackIcon = styled(Icon)`
   margin-left: -10px;
-`
+`;
 
 const ProjectHeader = styled.View`
   width: 100%;
@@ -185,13 +188,13 @@ const Description = styled(Text)`
   font-size: 16px;
   color: #949494;
   margin-bottom: 20px;
-`
+`;
 
 const SectionHeader = styled(Text)`
   font-size: 24px;
   font-weight: bold;
   margin-top: -15px;
-`
+`;
 
 const CardsWrapper = styled.ScrollView`
   margin-left: -40px;
@@ -199,12 +202,12 @@ const CardsWrapper = styled.ScrollView`
   padding-left: 30px;
   padding-right: 30px;
   margin-bottom: 15px;
-`
+`;
 
 const CardWrapper = styled.View`
   align-items: center;
   margin-left: 10px;
-`
+`;
 
 const Card = styled.TouchableOpacity`
   justify-content: center;
@@ -215,20 +218,20 @@ const Card = styled.TouchableOpacity`
   border-radius: 15px;
   box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.3);
   elevation: 6;
-`
+`;
 
 const CardTitle = styled(Text)`
   text-align: center;
   color: #949494;
   width: 100px;
-`
+`;
 
 const FollowerWrapper = styled.View`
   flex-direction: row;
   margin-top: 10px;
   width: 100%;
   height: 40px;
-`
+`;
 
 const Follower = styled.View`
   align-items: center;
@@ -239,11 +242,11 @@ const Follower = styled.View`
   border-radius: 20px;
   background: white;
   font-size: 15px;
-`
+`;
 
 const FollowerText = styled.Text`
   position: absolute;
-`
+`;
 
 const ViewContainer = styled.TouchableOpacity`
   align-items: center;
@@ -264,8 +267,8 @@ const ViewText = styled.Text`
   text-align: center;
 `;
 
-const Learning = (props) => {
-  loadInBrowser = (url) => {
+const Learning = props => {
+  loadInBrowser = url => {
     Linking.canOpenURL(url).then(supported => {
       if (supported) {
         Linking.openURL(url);
@@ -278,13 +281,33 @@ const Learning = (props) => {
       <CardsWrapper horizontal showsHorizontalScrollIndicator={false}>
         {props.data.map((card, i) => {
           return (
-            <CardWrapper style={{ marginRight: (i === props.data.length - 1) ? 70 : 20 }} key={card.id}>
-              <Card onPress={() => loadInBrowser(card.link)} style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
-                <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 50, alignItems: 'center', borderRadius: 15 }}>
-                </LinearGradient>
+            <CardWrapper
+              style={{ marginRight: i === props.data.length - 1 ? 70 : 20 }}
+              key={card.id}
+            >
+              <Card
+                onPress={() => loadInBrowser(card.link)}
+                style={{
+                  backgroundColor: colors[Math.floor(Math.random() * 5)]
+                }}
+              >
+                <LinearGradient
+                  colors={["rgba(255,255,255,0.8)", "transparent"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    padding: 50,
+                    alignItems: "center",
+                    borderRadius: 15
+                  }}
+                ></LinearGradient>
                 <View style={{ flex: 1, alignItems: "center", marginTop: -70 }}>
-                  {card.type === "video" && <Icon name="play-circle-outline" width={40} height={40} />}
-                  {card.type === "link" && <Icon name="file-text-outline" width={40} height={40} />}
+                  {card.type === "video" && (
+                    <Icon name="play-circle-outline" width={40} height={40} />
+                  )}
+                  {card.type === "link" && (
+                    <Icon name="file-text-outline" width={40} height={40} />
+                  )}
                 </View>
               </Card>
               <CardTitle p>{card.title}</CardTitle>
@@ -294,12 +317,12 @@ const Learning = (props) => {
       </CardsWrapper>
     </View>
   );
-}
+};
 
-const Followers = (props) => {
+const Followers = props => {
   var count = 0;
-  if(!props.data.length) {
-    return (<View></View>)
+  if (!props.data.length) {
+    return <View></View>;
   } else {
     return (
       <View>
@@ -308,10 +331,27 @@ const Followers = (props) => {
           {props.data.map((follower, i) => {
             if (i < 10 || i === props.data.length - 1) {
               return (
-                <Follower style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }} key={follower.id}>
-                  <LinearGradient colors={['rgba(255,255,255,0.8)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 20, alignItems: 'center', borderRadius: 20 }}>
-                  </LinearGradient>
-                  <FollowerText p style={{ marginLeft: -3 }}>{(i === props.data.length - 1 && count) ? "+" + (count) : (follower.fName[0] + follower.lName[0]).toUpperCase()}</FollowerText>
+                <Follower
+                  style={{
+                    backgroundColor: colors[Math.floor(Math.random() * 5)]
+                  }}
+                  key={follower.id}
+                >
+                  <LinearGradient
+                    colors={["rgba(255,255,255,0.8)", "transparent"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{
+                      padding: 20,
+                      alignItems: "center",
+                      borderRadius: 20
+                    }}
+                  ></LinearGradient>
+                  <FollowerText p style={{ marginLeft: -3 }}>
+                    {i === props.data.length - 1 && count
+                      ? "+" + count
+                      : (follower.fName[0] + follower.lName[0]).toUpperCase()}
+                  </FollowerText>
                 </Follower>
               );
             } else {
@@ -322,27 +362,39 @@ const Followers = (props) => {
       </View>
     );
   }
-}
+};
 
 const ViewProject = () => {
   const [liked, setLiked] = useState(false);
+  const [modalShown, setModalShown] = useState(false);
 
   const handleLikeClick = () => {
     setLiked(!liked);
-  }
+  };
+  const handleSubmit = () => {
+    setModalShown(!modalShown);
+  };
 
   return (
     <ProjectWrapper>
-      <ProjectHeader style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}>
+      <ProjectHeader
+        style={{ backgroundColor: colors[Math.floor(Math.random() * 5)] }}
+      >
         <IconWrapper>
           <Link to="/">
             <BackIcon name="arrow-ios-back-outline" width={36} height={36} />
           </Link>
           <View style={{ flexDirection: "row" }}>
-            <ButtonContainer>
+            <ButtonContainer onPress={handleSubmit}>
               <ButtonText>Submit</ButtonText>
             </ButtonContainer>
-            <Icon onPress={handleLikeClick} fill={liked ? "#ED7171" : ""} name={liked ? "heart" : "heart-outline"} width={36} height={36} />
+            <Icon
+              onPress={handleLikeClick}
+              fill={liked ? "#ED7171" : ""}
+              name={liked ? "heart" : "heart-outline"}
+              width={36}
+              height={36}
+            />
           </View>
         </IconWrapper>
         <ProjectTitleWrapper>
@@ -358,7 +410,7 @@ const ViewProject = () => {
       <ProjectInfo>
         <Description p>{data.desc}</Description>
         <SectionHeader p>Learn</SectionHeader>
-        <Learning data={data.learning}/>
+        <Learning data={data.learning} />
         <Followers data={data.followers} />
         <ViewContainer>
           <Link to="/projects/1/submissions">
@@ -366,6 +418,7 @@ const ViewProject = () => {
           </Link>
         </ViewContainer>
       </ProjectInfo>
+      <SubmitModal visible={modalShown} setVisible={setModalShown} />
     </ProjectWrapper>
   );
 };
