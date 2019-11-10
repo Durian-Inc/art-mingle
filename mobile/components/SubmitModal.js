@@ -48,7 +48,7 @@ const SubmitModal = ({ project, visible, setVisible }) => {
     var ref = firebase
       .storage()
       .ref()
-      .child("test")
+      .child(image.name)
       .put(blob);
 
     ref.on(
@@ -102,14 +102,14 @@ const SubmitModal = ({ project, visible, setVisible }) => {
           <TouchableHighlight
             onPress={async () => {
               const result = await DocumentPicker.getDocumentAsync();
-              setImage(result.uri);
+              setImage(result);
             }}
           >
             <Text>Choose file</Text>
           </TouchableHighlight>
           {image ? (
             <Image
-              source={{ uri: image }}
+              source={{ uri: image.uri }}
               style={{ width: 200, height: 200 }}
               PlaceholderContent={<ActivityIndicator />}
             />
@@ -124,7 +124,7 @@ const SubmitModal = ({ project, visible, setVisible }) => {
           <Buttons>
             <Button
               onPress={async () => {
-                if (image) uploadImage(image);
+                if (image) uploadImage(image.uri);
               }}
               title="Submit"
             ></Button>
