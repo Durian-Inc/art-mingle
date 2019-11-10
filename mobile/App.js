@@ -127,7 +127,7 @@ const App = () => {
         <Route path="/projects/:id/submissions" component={About} />
         <Route path="/search" component={Search} />
         <Route path="/groups/:id" component={Topics} />
-        <Route path="/users/:id" component={Topics} />
+        <Route path="/users/:id" component={Profile} />
       </Content>
     </NativeRouter>
   );
