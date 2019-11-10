@@ -61,7 +61,7 @@ const ProjectSquare = ({ project }) => {
   // TODO change link to the project id
   return (
     <PSWrapper color={project.color}>
-      <PSLink to="/projects/1">
+      <PSLink to={`/projects/${project.id}`}>
         <PSBox>
           <Icon name="mic-outline" fill="#ffffff" width={100} height={100} />
           <PSName h4>{project.name}</PSName>

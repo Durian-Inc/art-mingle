@@ -83,19 +83,22 @@ const AppBody = () => {
       setCurUser(curUserData);
 
       let followingSubmissions = [];
-      curUserData.following.forEach(followingUser => {
-        followingUser.submissions.forEach(submission => {
-          followingSubmissions.push({
-            id: submission.id,
-            name: submission.name,
-            likes: submission.likes,
-            date: new Date(submission.dateSubmitted),
-            color: "#000",
-            project: submission.project.name,
-            user: `${followingUser.firstName} ${followingUser.lastName}`
-          });
-        });
-      });
+      curUserData.following.forEach((followingUser) =>{
+        followingUser.submissions.forEach((submission) => {
+          followingSubmissions.push(
+            {
+              id: submission.id,
+              name: submission.name,
+              likes: submission.likes,
+              date: new Date(submission.dateSubmitted),
+              color: "#000",
+              project: submission.project,
+              firstName: followingUser.firstName,
+              lastName: followingUser.lastName,
+            }
+          )
+        })
+      })
       setFollowingSubmissions(
         followingSubmissions.sort((a, b) => b.date - a.date)
       );

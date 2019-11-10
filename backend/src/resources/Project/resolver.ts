@@ -1,4 +1,4 @@
-import { Authorized, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Query, Resolver } from "type-graphql";
 import { Project } from "../Project";
 
 import { getConnection, Repository } from "typeorm";
@@ -13,5 +13,10 @@ export class ProjectResolver {
   @Query(() => [Project])
   public async projects(): Promise<Project[]> {
     return this.productRepo.find();
+  }
+
+  @Query(() => Project, { name: "project" })
+  protected async getOne(@Arg("id", () => String) id: string) {
+    return this.productRepo.findOneOrFail({ id } as any);
   }
 }

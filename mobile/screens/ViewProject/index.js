@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { View, ScrollView, Linking } from "react-native";
+import React, { useState, useEffect } from "react";
+import { useGlobal } from "reactn";
+import { View, ScrollView, Button, StyleSheet, FlatList, Linking } from "react-native";
 import { Link } from "react-router-native";
 import { Text } from "react-native-elements";
 import styled from "styled-components";
@@ -10,106 +11,8 @@ import { SubmitModal } from "../../components/SubmitModal";
 
 const colors = ["#FFB4BB", "#FFDFB9", "#FFFFB9", "#BAFFC9", "#BAE1FF"];
 
-const data = {
-  title: "Sing-off",
-  date: "Dec. 12",
-  desc:
-    "Showcase your singing skills in this week's audio content! Feel free to go acapella or add some background music, anything goes!",
-  type: "art",
-  learning: [
-    {
-      title: "How to hit a sick dab",
-      type: "video",
-      link: "https://google.com",
-      id: "1"
-    },
-    {
-      title: "Here's some free shit",
-      type: "link",
-      link: "https://google.com",
-      id: "2"
-    },
-    {
-      title: "AAAAAAA",
-      type: "link",
-      link: "https://google.com",
-      id: "3"
-    },
-    {
-      title: "BBBBBBBBB",
-      type: "video",
-      link: "https://google.com",
-      id: "4"
-    }
-  ],
-  followers: [
-    {
-      fName: "Kevin",
-      lName: "Schoonover",
-      id: "1"
-    },
-    {
-      fName: "Clay",
-      lName: "McGinnis",
-      id: "2"
-    },
-    {
-      fName: "David",
-      lName: "Gardiner",
-      id: "3"
-    },
-    {
-      fName: "Tommy",
-      lName: "Dong",
-      id: "4"
-    },
-    {
-      fName: "Gavin",
-      lName: "Lewis",
-      id: "5"
-    },
-    {
-      fName: "Catherine",
-      lName: "Sauer",
-      id: "6"
-    },
-    {
-      fName: "Bob",
-      lName: "Ross",
-      id: "7"
-    },
-    {
-      fName: "Carl",
-      lName: "Sagan",
-      id: "8"
-    },
-    {
-      fName: "Chris",
-      lName: "Gu",
-      id: "9"
-    },
-    {
-      fName: "Ricardo",
-      lName: "Morales",
-      id: "10"
-    },
-    {
-      fName: "Clayton",
-      lName: "Price",
-      id: "11"
-    },
-    {
-      fName: "Anna",
-      lName: "Panckiewicz",
-      id: "12"
-    },
-    {
-      fName: "Patrick",
-      lName: "Taylor",
-      id: "13"
-    }
-  ]
-};
+import { useQuery } from "@apollo/react-hooks";
+import { GET_PROJECT_QUERY } from "../../utils/helpers";
 
 const ProjectWrapper = styled.View`
   flex: 1;
@@ -128,8 +31,8 @@ const ButtonContainer = styled.TouchableOpacity`
   justify-content: center;
   width: 100px;
   height: 36px
-  border-radius: 10px;  
-  border: 3px solid black;  
+  border-radius: 10px;
+  border: 3px solid black;
   background-color: transparent;
   margin-right: 15px;
 `;
@@ -195,7 +98,7 @@ const SectionHeader = styled(Text)`
   margin-top: -15px;
 `;
 
-const CardsWrapper = styled.ScrollView`
+const CardsWrapper = styled.FlatList`
   margin-left: -40px;
   margin-right: -30px;
   padding-left: 30px;
@@ -254,8 +157,8 @@ const ViewContainer = styled.TouchableOpacity`
   margin-top: 10px;
   width: 80%;
   height: 45px
-  border-radius: 10px;  
-  border: 3px solid black;  
+  border-radius: 10px;
+  border: 3px solid black;
   background-color: transparent;
   margin-right: 15px;
 `;
@@ -277,15 +180,18 @@ const Learning = props => {
 
   return (
     <View>
-      <CardsWrapper horizontal showsHorizontalScrollIndicator={false}>
-        {props.data.map((card, i) => {
-          return (
+      <CardsWrapper
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.id}
+        data={props.data}
+        renderItem={
+          ({ item }) => (
             <CardWrapper
-              style={{ marginRight: i === props.data.length - 1 ? 70 : 20 }}
-              key={card.id}
+              style={{ marginRight: 20 }}
             >
               <Card
-                onPress={() => loadInBrowser(card.link)}
+                onPress={() => loadInBrowser(card.url)}
                 style={{
                   backgroundColor: colors[Math.floor(Math.random() * 5)]
                 }}
@@ -309,11 +215,10 @@ const Learning = props => {
                   )}
                 </View>
               </Card>
-              <CardTitle p>{card.title}</CardTitle>
+              <CardTitle p>{item.description}</CardTitle>
             </CardWrapper>
-          );
-        })}
-      </CardsWrapper>
+          )
+        } />
     </View>
   );
 };
@@ -349,7 +254,7 @@ const Followers = props => {
                   <FollowerText p style={{ marginLeft: -3 }}>
                     {i === props.data.length - 1 && count
                       ? "+" + count
-                      : (follower.fName[0] + follower.lName[0]).toUpperCase()}
+                      : (follower.firstName[0] + follower.lastName[0]).toUpperCase()}
                   </FollowerText>
                 </Follower>
               );
@@ -363,9 +268,32 @@ const Followers = props => {
   }
 };
 
-const ViewProject = () => {
+const ViewProject = (props) => {
+  const [ followingSubmissions ] = useGlobal("followingSubmissions");
   const [liked, setLiked] = useState(false);
   const [modalShown, setModalShown] = useState(false);
+  const [project, setProject] = useState({});
+  const [resources, setResources] = useState([]);
+  const [ following, setFollowing ] = useState([]);
+  const { id } = props.match.params;
+
+  const { error, data, loading } = useQuery(GET_PROJECT_QUERY, {variables: {id}})
+
+  useEffect(() => {
+    if (error){
+      console.log(error)
+    } else if(!loading) {
+      setProject(data.project);
+      setResources(data.project.resources);
+    }
+  }, [loading])
+
+
+  useEffect(() => {
+    setFollowing(
+      followingSubmissions.filter((submission) => submission.project.id === id)
+    )
+  }, [])
 
   const handleLikeClick = () => {
     setLiked(!liked);
@@ -398,19 +326,19 @@ const ViewProject = () => {
         </IconWrapper>
         <ProjectTitleWrapper>
           <View>
-            <ProjectTitle p>{data.title}</ProjectTitle>
-            <Text p>Ends {data.date}</Text>
+            <ProjectTitle p>{project.name}</ProjectTitle>
+            <Text p>Ends {project.deadline && new Date(project.deadline).toLocaleDateString()}</Text>
           </View>
-          {data.type === "music" && <ProjectIcon name="mic-outline" />}
-          {data.type === "art" && <ProjectIcon name="color-palette-outline" />}
-          {data.type === "poetry" && <ProjectIcon name="edit-2-outline" />}
+          {project.category === "music" && <ProjectIcon name="mic-outline" />}
+          {project.category === "art" && <ProjectIcon name="color-palette-outline" />}
+          {project.category === "poetry" && <ProjectIcon name="edit-2-outline" />}
         </ProjectTitleWrapper>
       </ProjectHeader>
       <ProjectInfo>
-        <Description p>{data.desc}</Description>
+        <Description p>{project.description}</Description>
         <SectionHeader p>Learn</SectionHeader>
-        <Learning data={data.learning} />
-        <Followers data={data.followers} />
+        <Learning data={resources}/>
+        <Followers data={following} />
         <ViewContainer>
           <Link to="/projects/1/submissions">
             <ViewText>View All Submissions</ViewText>

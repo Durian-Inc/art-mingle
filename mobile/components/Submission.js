@@ -33,7 +33,7 @@ const Submission = ({ submission }) => {
         <View>
           <Text>{submission.name}</Text>
           <Text>{submission.user}</Text>
-          <Text>for {submission.project}</Text>
+          <Text>for {submission.project.name}</Text>
         </View>
         <SubLikes>
           <Icon name="heart" height={20} width={20} />

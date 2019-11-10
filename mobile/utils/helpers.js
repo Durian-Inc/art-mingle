@@ -26,9 +26,36 @@ export const GET_ME_QUERY = gql`
           name
           likes
           project {
+            id
             name
           }
         }
+      }
+    }
+  }
+`;
+
+
+export const GET_PROJECT_QUERY= gql`
+  query showProject($id: String!) {
+    project(id: $id) {
+      name
+      category
+      color
+      deadline
+      submissions {
+        user {
+          id
+          firstName
+          lastName
+        }
+      }
+      resources {
+        id
+        description
+        url
+        color
+        type
       }
     }
   }

@@ -4,10 +4,13 @@ import {
   OneToMany,
   Column,
   Entity,
+  ManyToMany,
+  JoinTable,
   PrimaryGeneratedColumn
 } from "typeorm";
 
 import { Submission } from "../Submission";
+import { LearningResource } from "../LearningResource";
 import { Lazy } from "../../lib/helpers";
 
 @ObjectType()
@@ -29,6 +32,10 @@ export class Project extends BaseEntity {
   @Column()
   public color: string;
 
+  @Field()
+  @Column()
+  public deadline: Date;
+
   @Field(() => [Submission])
   @OneToMany(
     () => Submission,
@@ -36,4 +43,15 @@ export class Project extends BaseEntity {
     { lazy: true }
   )
   submissions: Lazy<Submission[]>;
+
+  @Field(() => [LearningResource])
+  @ManyToMany(
+    () => LearningResource,
+    (learningResource: LearningResource) => learningResource.projects,
+    {
+      lazy: true
+    }
+  )
+  @JoinTable()
+  resources: Lazy<LearningResource[]>;
 }

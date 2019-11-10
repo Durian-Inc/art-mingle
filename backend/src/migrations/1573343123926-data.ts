@@ -3,19 +3,57 @@ import { MigrationInterface } from "typeorm";
 import { User } from "../resources/User";
 import { Project } from "../resources/Project";
 import { Submission } from "../resources/Submission";
+import { LearningResource } from "../resources/LearningResource";
 
 export class data1573343123926 implements MigrationInterface {
   public async up(): Promise<any> {
+    const learningResource1: LearningResource = await LearningResource.create({
+      description: "How to hit that pitch",
+      url: "https://google.com",
+      color: "#fff",
+      type: "link"
+    }).save();
+
+    const learningResource2: LearningResource = await LearningResource.create({
+      description: "Free recording programs",
+      url: "https://google.com",
+      color: "#fff",
+      type: "video"
+    }).save();
+
+    const learningResource3: LearningResource = await LearningResource.create({
+      description: "Another test video",
+      url: "https://google.com",
+      color: "#fff",
+      type: "video"
+    }).save();
+
+    const learningResource4: LearningResource = await LearningResource.create({
+      description: "How to not souck",
+      url: "https://google.com",
+      color: "#fff",
+      type: "link"
+    }).save();
+
     const project1: Project = await Project.create({
       name: "Sing-off",
-      category: "Music",
-      color: "#46EAEA"
+      category: "music",
+      color: "#46EAEA",
+      deadline: new Date(new Date().getTime() + 30 * 60000),
+      resources: [
+        learningResource1,
+        learningResource2,
+        learningResource3,
+        learningResource4
+      ]
     }).save();
 
     const project2: Project = await Project.create({
       name: "Sing-off II",
-      category: "Music",
-      color: "#46EAEA"
+      category: "music",
+      color: "#46EAEA",
+      deadline: new Date(new Date().getTime() + 30 * 86400000),
+      resources: [learningResource1, learningResource3]
     }).save();
 
     const clay: User = await User.create({
